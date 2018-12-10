@@ -1,4 +1,4 @@
-package be.ugent.iii.controller;
+package be.ugent.iii.zoo.controller;
 
 import be.ugent.iii.zoo.entity.Zoo;
 import be.ugent.iii.zoo.service.IZooService;
