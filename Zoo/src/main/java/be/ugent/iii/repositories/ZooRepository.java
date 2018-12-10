@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package repositories;
+package be.ugent.iii.repositories;
 
-import entities.Zoo;
+import be.ugent.iii.entities.Zoo;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -20,12 +20,7 @@ public interface ZooRepository extends CrudRepository<Zoo, Long> {
     
     @Query("SELECT * from Zoo z WHERE z.name=:name")
     List<Zoo> findByName(@Param("name") String name);
-    
    
-    @Override
-    @Transactional(timeout=8)
-    public Iterable<Zoo> findAll();
-    
     
     
 }
