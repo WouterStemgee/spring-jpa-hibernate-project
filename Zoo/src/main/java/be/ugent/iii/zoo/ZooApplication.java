@@ -25,13 +25,11 @@ public class ZooApplication {
     @Bean
     public CommandLineRunner demo(ZooDAO zDAO, ZooDepartmentDAO zpDAO) {
         return (args) -> {
-            zDAO.save(new Zoo("Planckendael", new Address("Leuvensesteenweg", 582, 2812, "Mechelen", "België"), "015 41 49 21"));
-            List<Zoo> zoos = zDAO.findByName("Planckendael");
-            ZooDepartment zp = new ZooDepartment("Waterdieren", zoos.get(0));
-            for(Zoo zoo : zoos) {
-                zoo.addZooDepartment(zp);
-            }
-            zpDAO.save(zp);
+//            zDAO.save(new Zoo("Planckendael", new Address("Leuvensesteenweg", 582, 2812, "Mechelen", "België"), "015 41 49 21"));
+//            Zoo zoo = zDAO.findByName("Planckendael");
+//            ZooDepartment zp = new ZooDepartment("Waterdieren", zoo);
+//            zoo.addZooDepartment(zp);
+//            zpDAO.save(zp);
         };
     }
 }

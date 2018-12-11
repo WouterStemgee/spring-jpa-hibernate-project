@@ -109,7 +109,6 @@ public class ZooAnimal implements Serializable {
 
     @Override
     public String toString() {
-        return "be.ugent.iii.zoo.entity.ZooAnimal[ id=" + id + " ]";
+        return "ZooAnimal{" + "specie=" + specie + ", gender=" + gender + ", name=" + name + ", department=" + department + '}';
     }
-
 }
