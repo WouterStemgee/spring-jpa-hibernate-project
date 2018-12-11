@@ -1,6 +1,7 @@
 package be.ugent.iii.zoo.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +23,7 @@ public class ZooAnimal implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "animal_id")
     private Long id;
 
     @Column(name = "specie")
@@ -89,19 +91,40 @@ public class ZooAnimal implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 5;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.specie);
+        hash = 79 * hash + Objects.hashCode(this.gender);
+        hash = 79 * hash + Objects.hashCode(this.name);
+        hash = 79 * hash + Objects.hashCode(this.department);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ZooAnimal)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        ZooAnimal other = (ZooAnimal) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ZooAnimal other = (ZooAnimal) obj;
+        if (!Objects.equals(this.specie, other.specie)) {
+            return false;
+        }
+        if (!Objects.equals(this.gender, other.gender)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.department, other.department)) {
             return false;
         }
         return true;
@@ -111,4 +134,5 @@ public class ZooAnimal implements Serializable {
     public String toString() {
         return "ZooAnimal{" + "specie=" + specie + ", gender=" + gender + ", name=" + name + ", department=" + department + '}';
     }
+
 }

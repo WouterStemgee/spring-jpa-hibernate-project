@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -35,11 +37,15 @@ public class ZooDepartment implements Serializable {
     @JoinColumn(name = "zoo_id")
     private Zoo zoo;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade=REMOVE, mappedBy = "department")
+    @OneToMany(fetch = FetchType.LAZY, cascade = REMOVE, mappedBy = "department")
     private Set<ZooAnimal> animals = new HashSet<>();
 
     @Column(name = "name")
     private String name;
+
+    @ManyToMany
+    @JoinTable(name = "zookeepers_per_departments", joinColumns = @JoinColumn(name = "department_id"), inverseJoinColumns = @JoinColumn(name = "worker_id"))
+    private Set<ZooKeeper> zooKeepers;
 
     public ZooDepartment() {
     }
@@ -48,7 +54,18 @@ public class ZooDepartment implements Serializable {
         this.name = name;
         this.zoo = zoo;
     }
-    
+
+    public Set<ZooKeeper> getZooKeepers() {
+        return zooKeepers;
+    }
+
+    public boolean addZooKeeper(ZooKeeper zooKeeper) {
+        if (!zooKeeper.getDepartments().contains(this)) {
+            zooKeeper.addDepartment(this);
+        }
+        return zooKeepers.add(zooKeeper);
+    }
+
     public Set<ZooAnimal> getAnimals() {
         return animals;
     }
@@ -86,7 +103,12 @@ public class ZooDepartment implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 3;
+        hash = 13 * hash + Objects.hashCode(this.department_id);
+        hash = 13 * hash + Objects.hashCode(this.zoo);
+        hash = 13 * hash + Objects.hashCode(this.animals);
+        hash = 13 * hash + Objects.hashCode(this.name);
+        hash = 13 * hash + Objects.hashCode(this.zooKeepers);
         return hash;
     }
 
@@ -102,10 +124,19 @@ public class ZooDepartment implements Serializable {
             return false;
         }
         final ZooDepartment other = (ZooDepartment) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
         if (!Objects.equals(this.department_id, other.department_id)) {
             return false;
         }
         if (!Objects.equals(this.zoo, other.zoo)) {
+            return false;
+        }
+        if (!Objects.equals(this.animals, other.animals)) {
+            return false;
+        }
+        if (!Objects.equals(this.zooKeepers, other.zooKeepers)) {
             return false;
         }
         return true;
@@ -113,7 +144,7 @@ public class ZooDepartment implements Serializable {
 
     @Override
     public String toString() {
-        return "ZooDepartment{" + "name=" + name + '}';
+        return "ZooDepartment{" + "zoo=" + zoo + ", animals=" + animals + ", name=" + name + ", zooKeepers=" + zooKeepers + '}';
     }
 
 }

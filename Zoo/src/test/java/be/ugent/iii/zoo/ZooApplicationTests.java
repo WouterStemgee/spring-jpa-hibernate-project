@@ -23,12 +23,12 @@ public class ZooApplicationTests {
     private ZooDepartmentDAO zdDAO;
 
     @Test
-    public void addZooWithDepartment() {
+    public void insertZooWithDepartment() {
         Zoo zoo = new Zoo("Planckendael", new Address("Leuvensesteenweg", 582, 2812, "Mechelen", "België"), "015 41 49 21");
         ZooDepartment department = new ZooDepartment("Waterdieren", zoo);
         zoo.addZooDepartment(department);
-        
-        // TODO: controller maken die alle DAO's beheert en wijzigingen doorvoert
+
+        // TODO: controller maken die alle DAO's beheert en wijzigingen doorvoert (vereenvoudigt de testen)
         zDAO.save(zoo);
         zdDAO.save(department);
 
@@ -39,4 +39,8 @@ public class ZooApplicationTests {
         assertEquals(foundDepartment.getName(), "Waterdieren");
         assertEquals(foundDepartment.getZoo().getName(), "Planckendael");
     }
+
+    // TODO: Alle Entities testen door ze aan te maken + wegschrijven naar database + opvragen -> checken indien correct
+    //    @Test
+    //    public void Test() {}
 }

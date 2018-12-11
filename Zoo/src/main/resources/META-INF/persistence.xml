@@ -4,6 +4,7 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <class>be.ugent.iii.zoo.entity.Zoo</class>
     <class>be.ugent.iii.zoo.entity.ZooAnimal</class>
+    <class>be.ugent.iii.zoo.entity.ZooKeeper</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/jpadb"/>
       <property name="javax.persistence.jdbc.user" value="iii"/>

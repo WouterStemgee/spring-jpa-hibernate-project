@@ -2,6 +2,7 @@ package be.ugent.iii.zoo.entity;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -41,6 +43,26 @@ public class Zoo implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "zoo")
     private Set<ZooDepartment> departments = new HashSet<>();
 
+    @OneToOne(mappedBy = "zoo")
+    private ZooOwner owner;
+
+    public Zoo() {
+    }
+
+    public Zoo(String name, Address address, String phoneNumber) {
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public ZooOwner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(ZooOwner owner) {
+        this.owner = owner;
+    }
+
     public Set<ZooDepartment> getDepartments() {
         return departments;
     }
@@ -50,15 +72,6 @@ public class Zoo implements Serializable {
             department.setZoo(this);
         }
         return departments.add(department);
-    }
-
-    public Zoo() {
-    }
-
-    public Zoo(String name, Address address, String phoneNumber) {
-        this.name = name;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
     }
 
     public String getName() {
@@ -95,22 +108,44 @@ public class Zoo implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != 0 ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.name);
+        hash = 79 * hash + Objects.hashCode(this.address);
+        hash = 79 * hash + Objects.hashCode(this.phoneNumber);
+        hash = 79 * hash + Objects.hashCode(this.departments);
+        hash = 79 * hash + Objects.hashCode(this.owner);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Zoo)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Zoo other = (Zoo) object;
-        if ((this.id == 0 && other.id != 0) || (this.id != 0 && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
             return false;
-        } else if ((this.name == null && other.name != null) || (this.name != null && !this.name.equals(other.name))) {
+        }
+        final Zoo other = (Zoo) obj;
+        if (!Objects.equals(this.name, other.name)) {
             return false;
-        } else if ((this.address == null && other.address != null) || (this.address != null && !this.address.equals(other.address))) {
+        }
+        if (!Objects.equals(this.phoneNumber, other.phoneNumber)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.address, other.address)) {
+            return false;
+        }
+        if (!Objects.equals(this.departments, other.departments)) {
+            return false;
+        }
+        if (!Objects.equals(this.owner, other.owner)) {
             return false;
         }
         return true;
@@ -118,7 +153,7 @@ public class Zoo implements Serializable {
 
     @Override
     public String toString() {
-        return "Zoo{name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber + "}";
+        return "Zoo{" + "name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber + ", departments=" + departments + ", owner=" + owner + '}';
     }
 
 }
