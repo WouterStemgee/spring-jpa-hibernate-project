@@ -25,10 +25,11 @@ public class ZooApplicationTests {
     @Test
     public void addZooWithDepartment() {
         Zoo zoo = new Zoo("Planckendael", new Address("Leuvensesteenweg", 582, 2812, "Mechelen", "België"), "015 41 49 21");
-        zDAO.save(zoo);
-
         ZooDepartment department = new ZooDepartment("Waterdieren", zoo);
         zoo.addZooDepartment(department);
+        
+        // TODO: controller maken die alle DAO's beheert en wijzigingen doorvoert
+        zDAO.save(zoo);
         zdDAO.save(department);
 
         Zoo foundZoo = zDAO.findByName("Planckendael");
