@@ -2,6 +2,7 @@ package be.ugent.iii.zoo.entity;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,12 +26,21 @@ public class Zoo implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Embedded
     @Column(name = "address")
-    private String address;
+    private Address address;
 
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    public Zoo() {}
+    
+    public Zoo(String name, Address address, String phoneNumber) {
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+    
     public String getName() {
         return name;
     }
@@ -39,11 +49,11 @@ public class Zoo implements Serializable {
         this.name = name;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
@@ -66,7 +76,7 @@ public class Zoo implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (id != 0 ? id.hashCode() : 0);
         return hash;
     }
 
@@ -88,7 +98,7 @@ public class Zoo implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Zoo[ name=" + name + " ]";
+        return "Zoo[name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber +"]";
     }
 
 }
