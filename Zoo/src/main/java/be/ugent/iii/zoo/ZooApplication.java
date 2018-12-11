@@ -1,5 +1,6 @@
 package be.ugent.iii.zoo;
 
+import be.ugent.iii.zoo.entity.Address;
 import be.ugent.iii.zoo.entity.Zoo;
 import be.ugent.iii.zoo.repository.ZooRepository;
 import org.slf4j.Logger;
@@ -21,8 +22,8 @@ public class ZooApplication {
     @Bean
     public CommandLineRunner demo(ZooRepository repository) {
         return (args) -> {
-            repository.save(new Zoo("Planckendael", "Leuvensesteenweg 582, 2812 Mechelen", "015 41 49 21"));
-            log.info("Zoo found with getAllZoos():");
+            repository.save(new Zoo("Planckendael", new Address("Leuvensesteenweg", 582, 2812, "Mechelen", "België"), "015 41 49 21"));
+            log.info("Zoo found with findAll():");
             log.info("-------------------------------");
             for (Zoo zoo : repository.findAll()) {
                 log.info(zoo.toString());

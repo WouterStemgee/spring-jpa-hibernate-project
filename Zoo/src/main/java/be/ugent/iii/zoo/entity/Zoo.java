@@ -1,12 +1,15 @@
 package be.ugent.iii.zoo.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -14,10 +17,9 @@ import javax.persistence.Table;
  * @author Janne
  */
 @Entity
-@Table(name = "zoo")
+@Table(name = "zoos")
 public class Zoo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "zoo_id")
@@ -33,14 +35,26 @@ public class Zoo implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    public Zoo() {}
-    
+    @OneToMany(mappedBy = "zoo")
+    private Set<ZooDepartment> departments = new HashSet<>();
+
+    public Set<ZooDepartment> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(Set<ZooDepartment> departments) {
+        this.departments = departments;
+    }
+
+    public Zoo() {
+    }
+
     public Zoo(String name, Address address, String phoneNumber) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -98,7 +112,7 @@ public class Zoo implements Serializable {
 
     @Override
     public String toString() {
-        return "Zoo[name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber +"]";
+        return "Zoo[name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber + "]";
     }
 
 }
