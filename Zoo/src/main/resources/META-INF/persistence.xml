@@ -3,6 +3,7 @@
   <persistence-unit name="be.ugent.iii_projectJPA_jar_0.0.1-ZOOPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <class>be.ugent.iii.zoo.entity.Zoo</class>
+    <class>be.ugent.iii.zoo.entity.ZooAnimal</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/jpadb"/>
       <property name="javax.persistence.jdbc.user" value="iii"/>

@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +20,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "zoos")
 public class Zoo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,15 +38,18 @@ public class Zoo implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "zoo")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "zoo")
     private Set<ZooDepartment> departments = new HashSet<>();
 
     public Set<ZooDepartment> getDepartments() {
         return departments;
     }
 
-    public void setDepartments(Set<ZooDepartment> departments) {
-        this.departments = departments;
+    public boolean addZooDepartment(ZooDepartment department) {
+        if (department.getZoo() != this) {
+            department.setZoo(this);
+        }
+        return departments.add(department);
     }
 
     public Zoo() {
@@ -112,7 +118,7 @@ public class Zoo implements Serializable {
 
     @Override
     public String toString() {
-        return "Zoo[name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber + "]";
+        return "Zoo{name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber + "}";
     }
 
 }

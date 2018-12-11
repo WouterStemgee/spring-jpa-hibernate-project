@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package be.ugent.iii.zoo.entity;
 
 import javax.persistence.Embeddable;
@@ -73,7 +68,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address: " + street + " " + ", " + zipcode + " " + city + ", " + country;
+        return "Address{" + street + " " + ", " + zipcode + " " + city + ", " + country + "}";
     }
 
 }
