@@ -2,6 +2,7 @@ package be.ugent.iii.zoo.repository;
 
 import be.ugent.iii.zoo.entity.ZooAnimal;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -9,4 +10,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface ZooAnimalDAO extends CrudRepository<ZooAnimal, Long> {
 
+    ZooAnimal findByName(@Param("name") String name);
 }

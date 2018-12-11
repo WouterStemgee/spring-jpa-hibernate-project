@@ -45,7 +45,7 @@ public class ZooDepartment implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "zookeepers_per_departments", joinColumns = @JoinColumn(name = "department_id"), inverseJoinColumns = @JoinColumn(name = "worker_id"))
-    private Set<ZooKeeper> zooKeepers;
+    private Set<ZooKeeper> zooKeepers = new HashSet<>();
 
     public ZooDepartment() {
     }
@@ -105,10 +105,7 @@ public class ZooDepartment implements Serializable {
     public int hashCode() {
         int hash = 3;
         hash = 13 * hash + Objects.hashCode(this.department_id);
-        hash = 13 * hash + Objects.hashCode(this.zoo);
-        hash = 13 * hash + Objects.hashCode(this.animals);
         hash = 13 * hash + Objects.hashCode(this.name);
-        hash = 13 * hash + Objects.hashCode(this.zooKeepers);
         return hash;
     }
 
@@ -128,15 +125,6 @@ public class ZooDepartment implements Serializable {
             return false;
         }
         if (!Objects.equals(this.department_id, other.department_id)) {
-            return false;
-        }
-        if (!Objects.equals(this.zoo, other.zoo)) {
-            return false;
-        }
-        if (!Objects.equals(this.animals, other.animals)) {
-            return false;
-        }
-        if (!Objects.equals(this.zooKeepers, other.zooKeepers)) {
             return false;
         }
         return true;

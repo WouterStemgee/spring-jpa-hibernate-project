@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -40,7 +41,7 @@ public class Zoo implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "zoo")
+    @OneToMany(mappedBy = "zoo")
     private Set<ZooDepartment> departments = new HashSet<>();
 
     @OneToOne(mappedBy = "zoo")
@@ -113,8 +114,6 @@ public class Zoo implements Serializable {
         hash = 79 * hash + Objects.hashCode(this.name);
         hash = 79 * hash + Objects.hashCode(this.address);
         hash = 79 * hash + Objects.hashCode(this.phoneNumber);
-        hash = 79 * hash + Objects.hashCode(this.departments);
-        hash = 79 * hash + Objects.hashCode(this.owner);
         return hash;
     }
 
@@ -140,12 +139,6 @@ public class Zoo implements Serializable {
             return false;
         }
         if (!Objects.equals(this.address, other.address)) {
-            return false;
-        }
-        if (!Objects.equals(this.departments, other.departments)) {
-            return false;
-        }
-        if (!Objects.equals(this.owner, other.owner)) {
             return false;
         }
         return true;

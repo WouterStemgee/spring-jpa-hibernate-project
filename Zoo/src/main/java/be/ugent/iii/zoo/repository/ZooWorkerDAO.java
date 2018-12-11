@@ -1,6 +1,6 @@
 package be.ugent.iii.zoo.repository;
 
-import be.ugent.iii.zoo.entity.ZooDepartment;
+import be.ugent.iii.zoo.entity.ZooWorker;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
  *
  * @author Wouter
  */
-public interface ZooDepartmentDAO extends CrudRepository<ZooDepartment, Long> {
+public interface ZooWorkerDAO extends CrudRepository<ZooWorker, Long> {
 
-    ZooDepartment findByName(@Param("name") String name);
+    ZooWorker findByName(@Param("name") String name);
 }
