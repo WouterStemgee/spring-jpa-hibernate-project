@@ -23,7 +23,7 @@ public class ZooKeeper extends ZooWorker implements Serializable {
 
     public ZooKeeper(String name, Address address, Set<ZooDepartment> departments) {
         super(name, address);
-        for(ZooDepartment department : departments) {
+        for (ZooDepartment department : departments) {
             addDepartment(department);
         }
     }

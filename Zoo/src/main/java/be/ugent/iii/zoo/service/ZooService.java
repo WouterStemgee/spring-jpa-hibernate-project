@@ -46,7 +46,7 @@ public class ZooService {
     public List<Zoo> getAllZoos() {
         return (List<Zoo>) zooDAO.findAll();
     }
-    
+
     public List<ZooDepartment> getAllZooDepartments() {
         return (List<ZooDepartment>) zooDepartmentDAO.findAll();
     }

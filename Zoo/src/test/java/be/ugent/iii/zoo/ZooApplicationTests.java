@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,6 @@ public class ZooApplicationTests {
 
         // retreive Zoo from database
         Zoo foundZoo = service.getZoo(zooName);
-
         assertEquals(foundZoo.getName(), zooName);
     }
 
@@ -48,14 +48,14 @@ public class ZooApplicationTests {
         List<String> departmentNames = Arrays.asList("Europe", "Africa", "America", "Asia", "Oceania");
         List<ZooDepartment> zooDepartments = new ArrayList<>();
         for (int i = 0; i < departmentNames.size(); i++) {
-            ZooDepartment department = new ZooDepartment(departmentNames.get(i), zoo);       
+            ZooDepartment department = new ZooDepartment(departmentNames.get(i), zoo);
             zoo.addZooDepartment(department);
             zooDepartments.add(department);
         }
-        
+
         // check bidirectional relation
-        for(ZooDepartment department : zoo.getDepartments()) {
-            assertEquals(department.getZoo().getName(), zooName);
+        for (ZooDepartment department : zoo.getDepartments()) {
+            assertSame(zoo, department.getZoo());
         }
 
         // add Zoo to database
@@ -63,17 +63,14 @@ public class ZooApplicationTests {
 
         // retreive Zoo from database
         Zoo foundZoo = service.getZoo(zooName);
-        assertEquals(foundZoo.getName(), zooName);
-        
+        assertEquals(zooName, foundZoo.getName());
+
         // retreive ZooDepartment's from database, check relation in database
         for (int i = 0; i < departmentNames.size(); i++) {
             ZooDepartment foundZooDepartment = service.getDepartment(departmentNames.get(i));
-            assertEquals(foundZooDepartment.getName(), departmentNames.get(i));
-            assertEquals(foundZooDepartment.getZoo().getName(), zooName);          
+            assertEquals(departmentNames.get(i), foundZooDepartment.getName());
+            assertEquals(zooName, foundZooDepartment.getZoo().getName());
         }
     }
-    
-    // TODO: Alle Entities testen door ze aan te maken + wegschrijven naar database + opvragen -> checken indien correct
-    //    @Test
-    //    public void Test() {}
+
 }

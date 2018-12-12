@@ -13,20 +13,40 @@
 - [ ] Met de datalaag kan je objecten aanpassen.
 - [ ] Schrijf voor elke functionaliteit een JUnit-test die het gebruik en de mogelijke speciale gevallen illustreert.
 
+## Testen
+### TODO
+- [x] Zoo toevoegen
+- [x] Zoo met meerdere ZooDepartment's toevoegen
+- [ ] Zoo met ZooOwner toevoegen
+- [ ] meerdere ZooDepartment's met meerdere ZooKeeper's toevoegen
+- [ ] ZooDepartment met meerdere ZooAnimal's toevoegen
+- [ ] Test fetch = EAGER bij Zoo<->ZooDepartment
+- [ ] Test cascade = REMOVE bij Zoo<->ZooDepartment
+- [ ] Test fetch = LAZY bij ZooDeparments<->ZooAnimal
+- [ ] Test cascade = DETACH bij ZooDeparments<->ZooAnimal
+- [ ] Zoo toevoegen met alle mogelijke Entiteiten + alle opvragingen met parameters uitvoeren
+- [ ] Zoo toevoegen met alle mogelijke Entiteiten + wijzigingen uitvoeren op alle properties
+
+### Entities testen
+1. Entity testen door ze aan te maken 
+2. De object-relaties checken: assertSame(expected, actual)
+3. Entities wegschrijven naar database
+4. Entities opvragen uit database
+5. Checken indien opgevraagde Entities dezelfde properties hebben als de oorspronkelijke Entities: assertEqual(expected, actual)
+
 ## UML Klassendiagram
 ![](https://i.imgur.com/cdlWxcT.png)
 
 ## Oplossing
 ### 1-1 relaties
-- Zoo<->ZooOwner (bidirectioneel, zonder cascade)
+- Zoo<->ZooOwner
 ### 1-n relaties
-- Zoo<->ZooDepartment (bidirectioneel)
-- ZooDepartment<->ZooAnimal (bidirectioneel, lazy opvraging, met cascade)
+- Zoo<->ZooDepartment (fetch = EAGER, cascade = REMOVE)
+- ZooDepartment<->ZooAnimal (fetch = LAZY, cascade = DETACH)
 ### n-n relaties
-- Zoo<->ZooDepartment-ZooKeeper (bidirectioneel)
+- ZooDepartment<->ZooKeeper (JoinTable = "zookeepers_per_departments")
 ### Overerving 
-- ZooOwner en ZooKeeper gebruiken overerving van ZooWorker 
-(volledige hiërarchie vertaalt naar 1 tabel met discriminator)
+- ZooOwner en ZooKeeper gebruiken overerving van ZooWorker (hiërarchie vertaalt naar 1 tabel met discriminator)
 ### Value-objecten
-- Address
+- Address (Embeddable)
 

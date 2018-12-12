@@ -126,7 +126,7 @@ public class ZooAnimal implements Serializable {
 
     @Override
     public String toString() {
-        return "ZooAnimal{" + "specie=" + specie + ", gender=" + gender + ", name=" + name + ", department=" + department + '}';
+        return "ZooAnimal{" + "specie=" + specie + ", gender=" + gender + ", name=" + name + '}';
     }
 
 }

@@ -23,88 +23,91 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "zoos")
 public class Zoo implements Serializable {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "zoo_id")
     private Long id;
-
+    
     @Column(name = "name")
     private String name;
-
+    
     @Embedded
     @Column(name = "address")
     private Address address;
-
+    
     @Column(name = "phone_number")
     private String phoneNumber;
-
+    
     @OneToMany(mappedBy = "zoo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<ZooDepartment> departments = new HashSet<>();
-
+    
     @OneToOne(mappedBy = "zoo")
     private ZooOwner owner;
-
+    
     public Zoo() {
     }
-
+    
     public Zoo(String name, Address address, String phoneNumber) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
-
+    
     public ZooOwner getOwner() {
         return owner;
     }
-
+    
     public void setOwner(ZooOwner owner) {
+        if (owner.getZoo() != this) {
+            owner.setZoo(this);
+        }
         this.owner = owner;
     }
-
+    
     public Set<ZooDepartment> getDepartments() {
         return departments;
     }
-
+    
     public boolean addZooDepartment(ZooDepartment department) {
         if (department.getZoo() != this) {
             department.setZoo(this);
         }
         return departments.add(department);
     }
-
+    
     public String getName() {
         return name;
     }
-
+    
     public void setName(String name) {
         this.name = name;
     }
-
+    
     public Address getAddress() {
         return address;
     }
-
+    
     public void setAddress(Address address) {
         this.address = address;
     }
-
+    
     public String getPhoneNumber() {
         return phoneNumber;
     }
-
+    
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
+    
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -114,7 +117,7 @@ public class Zoo implements Serializable {
         hash = 79 * hash + Objects.hashCode(this.phoneNumber);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -141,10 +144,10 @@ public class Zoo implements Serializable {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
-        return "Zoo{" + "name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber + ", departments=" + departments + ", owner=" + owner + '}';
+        return "Zoo{" + "name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber + '}';
     }
-
+    
 }

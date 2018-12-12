@@ -130,7 +130,7 @@ public class ZooDepartment implements Serializable {
 
     @Override
     public String toString() {
-        return "ZooDepartment{" + "zoo=" + zoo + ", animals=" + animals + ", name=" + name + ", zooKeepers=" + zooKeepers + '}';
+        return "ZooDepartment{" + ", name=" + name + '}';
     }
 
 }

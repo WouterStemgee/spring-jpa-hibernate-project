@@ -17,7 +17,7 @@ public class ZooOwner extends ZooWorker implements Serializable {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "zoo_id", unique = true, nullable = true, updatable = true)
+    @JoinColumn(name = "zoo_id")
     private Zoo zoo;
 
     public ZooOwner() {
@@ -33,6 +33,9 @@ public class ZooOwner extends ZooWorker implements Serializable {
     }
 
     public void setZoo(Zoo zoo) {
+        if (zoo.getOwner() != this) {
+            zoo.setOwner(this);
+        }
         this.zoo = zoo;
     }
 
