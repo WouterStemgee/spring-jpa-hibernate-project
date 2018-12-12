@@ -19,10 +19,8 @@ import javax.persistence.Table;
 @Table(name = "animals")
 public class ZooAnimal implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "animal_id")
     private Long id;
 
@@ -96,7 +94,6 @@ public class ZooAnimal implements Serializable {
         hash = 79 * hash + Objects.hashCode(this.specie);
         hash = 79 * hash + Objects.hashCode(this.gender);
         hash = 79 * hash + Objects.hashCode(this.name);
-        hash = 79 * hash + Objects.hashCode(this.department);
         return hash;
     }
 
@@ -122,9 +119,6 @@ public class ZooAnimal implements Serializable {
             return false;
         }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.department, other.department)) {
             return false;
         }
         return true;

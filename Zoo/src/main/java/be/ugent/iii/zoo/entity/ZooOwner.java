@@ -15,12 +15,18 @@ import javax.persistence.OneToOne;
 @DiscriminatorValue("O")
 public class ZooOwner extends ZooWorker implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @OneToOne
     @MapsId
     @JoinColumn(name = "zoo_id", unique = true, nullable = true, updatable = true)
     private Zoo zoo;
+
+    public ZooOwner() {
+    }
+
+    public ZooOwner(String name, Address address, Zoo zoo) {
+        super(name, address);
+        this.zoo = zoo;
+    }
 
     public Zoo getZoo() {
         return zoo;

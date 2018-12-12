@@ -24,10 +24,8 @@ import javax.persistence.Table;
 @Table(name = "zoos")
 public class Zoo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "zoo_id")
     private Long id;
 
@@ -41,7 +39,7 @@ public class Zoo implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "zoo")
+    @OneToMany(mappedBy = "zoo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<ZooDepartment> departments = new HashSet<>();
 
     @OneToOne(mappedBy = "zoo")

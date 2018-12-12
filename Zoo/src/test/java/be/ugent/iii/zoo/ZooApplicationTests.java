@@ -48,7 +48,14 @@ public class ZooApplicationTests {
         List<String> departmentNames = Arrays.asList("Europe", "Africa", "America", "Asia", "Oceania");
         List<ZooDepartment> zooDepartments = new ArrayList<>();
         for (int i = 0; i < departmentNames.size(); i++) {
-            zooDepartments.add(new ZooDepartment(departmentNames.get(i), zoo));
+            ZooDepartment department = new ZooDepartment(departmentNames.get(i), zoo);       
+            zoo.addZooDepartment(department);
+            zooDepartments.add(department);
+        }
+        
+        // check bidirectional relation
+        for(ZooDepartment department : zoo.getDepartments()) {
+            assertEquals(department.getZoo().getName(), zooName);
         }
 
         // add Zoo to database
@@ -58,11 +65,11 @@ public class ZooApplicationTests {
         Zoo foundZoo = service.getZoo(zooName);
         assertEquals(foundZoo.getName(), zooName);
         
-        // retreive ZooDepartment's from database, check if bidirectional relation is correctly set
+        // retreive ZooDepartment's from database, check relation in database
         for (int i = 0; i < departmentNames.size(); i++) {
             ZooDepartment foundZooDepartment = service.getDepartment(departmentNames.get(i));
             assertEquals(foundZooDepartment.getName(), departmentNames.get(i));
-            assertEquals(foundZooDepartment.getZoo().getName(), zooName);
+            assertEquals(foundZooDepartment.getZoo().getName(), zooName);          
         }
     }
     

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import static javax.persistence.CascadeType.REMOVE;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,10 +26,8 @@ import javax.persistence.Table;
 @Table(name = "departments")
 public class ZooDepartment implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "department_id")
     private Long department_id;
 
@@ -37,7 +35,7 @@ public class ZooDepartment implements Serializable {
     @JoinColumn(name = "zoo_id")
     private Zoo zoo;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = REMOVE, mappedBy = "department")
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private Set<ZooAnimal> animals = new HashSet<>();
 
     @Column(name = "name")

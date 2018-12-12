@@ -24,18 +24,24 @@ import javax.persistence.Table;
 @Table(name = "workers")
 public abstract class ZooWorker implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "worker_id")
     private Long id;
 
     @Column(name = "name")
-    private String name;
+    protected String name;
 
     @Embedded
-    private Address address;
+    protected Address address;
+
+    public ZooWorker() {
+    }
+
+    public ZooWorker(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
 
     public Address getAddress() {
         return address;
