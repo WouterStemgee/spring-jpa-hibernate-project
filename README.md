@@ -13,12 +13,20 @@
 - [ ] Met de datalaag kan je objecten aanpassen.
 - [ ] Schrijf voor elke functionaliteit een JUnit-test die het gebruik en de mogelijke speciale gevallen illustreert.
 
-## Oplossing
-- 1-1-relaties: Zoo-ZooOwner (bidirectioneel, zonder cascade)
-- 1-n-relaties: Zoo-ZooDepartment (bidirectioneel), ZooDepartment-ZooAnimal (bidirectioneel, lazy opvraging, met cascade)
-- n-n-relaties: Zoo-ZooDepartment-ZooKeeper (bidirectioneel)
-- overerving: ZooOwner en ZooKeeper gebruiken overerving van ZooWorker (volledige hiërarchie vertaalt naar 1 tabel met discriminator)
-- value-objecten: Address
-
 ## UML Klassendiagram
-![](UML/img.png)
+![](https://i.imgur.com/cdlWxcT.png)
+
+## Oplossing
+### 1-1 relaties
+- Zoo<->ZooOwner (bidirectioneel, zonder cascade)
+### 1-n relaties
+- Zoo<->ZooDepartment (bidirectioneel)
+- ZooDepartment<->ZooAnimal (bidirectioneel, lazy opvraging, met cascade)
+### n-n relaties
+- Zoo<->ZooDepartment-ZooKeeper (bidirectioneel)
+### Overerving 
+- ZooOwner en ZooKeeper gebruiken overerving van ZooWorker 
+(volledige hiërarchie vertaalt naar 1 tabel met discriminator)
+### Value-objecten
+- Address
+
