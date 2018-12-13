@@ -3,9 +3,11 @@ package be.ugent.iii.zoo.service;
 import be.ugent.iii.zoo.entity.Zoo;
 import be.ugent.iii.zoo.entity.ZooAnimal;
 import be.ugent.iii.zoo.entity.ZooDepartment;
+import be.ugent.iii.zoo.entity.ZooOwner;
 import be.ugent.iii.zoo.repository.ZooAnimalDAO;
 import be.ugent.iii.zoo.repository.ZooDAO;
 import be.ugent.iii.zoo.repository.ZooDepartmentDAO;
+import be.ugent.iii.zoo.repository.ZooWorkerDAO;
 import java.util.List;
 import java.util.Set;
 import javax.transaction.Transactional;
@@ -21,6 +23,9 @@ public class ZooService {
 
     @Autowired
     private ZooDAO zooDAO;
+    
+    @Autowired
+    private ZooWorkerDAO zooWorkerDAO;
 
     @Autowired
     private ZooDepartmentDAO zooDepartmentDAO;
@@ -38,7 +43,14 @@ public class ZooService {
             return true;
         }
     }
-
+ 
+    @Transactional
+    public synchronized void addZooWithOwner(Zoo zoo, ZooOwner owner) {
+        if (addZoo(zoo)) {
+            zooWorkerDAO.save(owner);
+        }
+    }
+    
     @Transactional
     public synchronized void addZooWithDepartments(Zoo zoo, List<ZooDepartment> departments) {
         if (addZoo(zoo)) {

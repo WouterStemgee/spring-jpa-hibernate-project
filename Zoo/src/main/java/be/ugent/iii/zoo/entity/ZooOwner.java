@@ -16,7 +16,6 @@ import javax.persistence.OneToOne;
 public class ZooOwner extends ZooWorker implements Serializable {
 
     @OneToOne
-    @MapsId
     @JoinColumn(name = "zoo_id")
     private Zoo zoo;
 

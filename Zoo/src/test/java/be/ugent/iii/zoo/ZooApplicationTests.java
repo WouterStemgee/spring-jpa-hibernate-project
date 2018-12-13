@@ -7,6 +7,7 @@ import be.ugent.iii.zoo.entity.Mammal;
 import be.ugent.iii.zoo.entity.Zoo;
 import be.ugent.iii.zoo.entity.ZooAnimal;
 import be.ugent.iii.zoo.entity.ZooDepartment;
+import be.ugent.iii.zoo.entity.ZooOwner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +41,28 @@ public class ZooApplicationTests {
     }
 
     @Test
+    public void addZooWithOwner() {
+        // create Zoo
+        String zooName = "De grotten van Han";
+        Zoo zoo = new Zoo(zooName, new Address("Rue Joseph Lamotte", 2, 5580, "Han-sur-Lesse", "België"), "084 37 72 13");
+
+        // create ZooOwner
+        ZooOwner owner = new ZooOwner("Han Verschuure", new Address("Rue Joseph Lamotte", 2, 5580, "Han-sur-Lesse", "België"), zoo);
+        owner.setZoo(zoo);
+
+        // check bidirectional object-relation
+        assertSame(owner, zoo.getOwner());
+
+        // add Zoo with ZooOwner to database
+        service.addZooWithOwner(zoo, owner);
+
+        // retreive Zoo from database
+        Zoo foundZoo = service.getZooById(zoo.getId());
+        assertEquals(zoo.getName(), foundZoo.getName());
+        assertEquals(zoo.getOwner().getName(), foundZoo.getOwner().getName());
+    }
+
+    @Test
     public void addZooWithDepartments() {
         // create Zoo
         String zooName = "Planckendael";
@@ -54,7 +77,7 @@ public class ZooApplicationTests {
             zooDepartments.add(department);
         }
 
-        // check bidirectional relation
+        // check bidirectional object-relation
         for (ZooDepartment department : zoo.getDepartments()) {
             assertSame(zoo, department.getZoo());
         }
@@ -63,7 +86,7 @@ public class ZooApplicationTests {
         service.addZooWithDepartments(zoo, zooDepartments);
 
         // retreive Zoo from database
-        Zoo foundZoo = service.getZooById(zoo.getId());;
+        Zoo foundZoo = service.getZooById(zoo.getId());
         assertEquals(zooName, foundZoo.getName());
 
         // retreive ZooDepartment's from database, check relation in database
@@ -111,7 +134,7 @@ public class ZooApplicationTests {
 
         }
 
-        // check bidirectional relation
+        // check bidirectional object-relation
         for (ZooDepartment department : zoo.getDepartments()) {
             assertSame(zoo, department.getZoo());
         }

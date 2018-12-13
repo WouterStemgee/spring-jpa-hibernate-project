@@ -17,7 +17,7 @@
 ### TODO
 - [x] Zoo toevoegen
 - [x] Zoo met meerdere ZooDepartment's toevoegen
-- [ ] Zoo met ZooOwner toevoegen
+- [x] Zoo met ZooOwner toevoegen
 - [ ] meerdere ZooDepartment's met meerdere ZooKeeper's toevoegen
 - [x] ZooDepartment met meerdere ZooAnimal's toevoegen
 - [ ] Test cascade = REMOVE bij Zoo<->ZooDepartment
