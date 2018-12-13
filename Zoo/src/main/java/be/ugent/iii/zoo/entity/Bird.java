@@ -1,18 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package be.ugent.iii.zoo.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  *
@@ -22,20 +17,19 @@ import javax.persistence.Table;
 @DiscriminatorValue("Bird")
 public class Bird extends ZooAnimal implements Serializable {
 
-    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "animal_id")
     private Long id;
-    
+
     //can the specified bird fly or not
-    @Column (name = "flying")
+    @Column(name = "flying")
     private boolean flying;
 
     public Bird() {
     }
-    
-    public Bird(String gender, String name, ZooDepartment department, boolean flying){
+
+    public Bird(String gender, String name, ZooDepartment department, boolean flying) {
         super(gender, name, department);
         this.flying = flying;
     }
@@ -50,19 +44,26 @@ public class Bird extends ZooAnimal implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Bird)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Bird other = (Bird) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Bird other = (Bird) obj;
+        if (this.flying != other.flying) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
@@ -70,17 +71,15 @@ public class Bird extends ZooAnimal implements Serializable {
 
     @Override
     public String toString() {
-        return "Bird[ id=" + id + " name=" + super.getName() + " gender=" + super.getGender()+ " flying = " + flying + " ]" ;
+        return "Bird[ id=" + id + " name=" + super.getName() + " gender=" + super.getGender() + " flying = " + flying + " ]";
     }
-    
-    public boolean isFlying(){
+
+    public boolean isFlying() {
         return flying;
     }
-    
-    public void setFlying(boolean flying){
+
+    public void setFlying(boolean flying) {
         this.flying = flying;
     }
-    
-    
-    
+
 }

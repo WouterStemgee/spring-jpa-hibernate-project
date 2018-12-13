@@ -1,13 +1,11 @@
 package be.ugent.iii.zoo.service;
 
-import be.ugent.iii.zoo.entity.Address;
 import be.ugent.iii.zoo.entity.Zoo;
 import be.ugent.iii.zoo.entity.ZooAnimal;
 import be.ugent.iii.zoo.entity.ZooDepartment;
 import be.ugent.iii.zoo.repository.ZooAnimalDAO;
 import be.ugent.iii.zoo.repository.ZooDAO;
 import be.ugent.iii.zoo.repository.ZooDepartmentDAO;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import javax.transaction.Transactional;
@@ -26,40 +24,86 @@ public class ZooService {
 
     @Autowired
     private ZooDepartmentDAO zooDepartmentDAO;
-    
+
     @Autowired
     private ZooAnimalDAO zooAnimalDAO;
 
     @Transactional
-    public void addZoo(Zoo zoo) {
-        zooDAO.save(zoo);
+    public synchronized boolean addZoo(Zoo zoo) {
+        List<Zoo> list = zooDAO.findByName(zoo.getName());
+        if (list.size() > 0) {
+            return false;
+        } else {
+            zooDAO.save(zoo);
+            return true;
+        }
     }
 
     @Transactional
-    public void addZooWithDepartments(Zoo zoo, List<ZooDepartment> departments) {
-        zooDAO.save(zoo);
-        zooDepartmentDAO.saveAll(departments);
+    public synchronized void addZooWithDepartments(Zoo zoo, List<ZooDepartment> departments) {
+        if (addZoo(zoo)) {
+            zooDepartmentDAO.saveAll(departments);
+        }
     }
-    
+
     @Transactional
-    public void addAnimals(Set<ZooAnimal> animals){
+    public synchronized void addDepartmentWithAnimals(ZooDepartment department, Set<ZooAnimal> animals) {
+        zooDepartmentDAO.save(department);
         zooAnimalDAO.saveAll(animals);
     }
 
-    public Zoo getZoo(String zooName) {
-        return zooDAO.findByName(zooName);
-    }
-
-    public ZooDepartment getDepartment(String departmentName) {
-        return zooDepartmentDAO.findByName(departmentName);
+    public Zoo getZooById(long ZooId) {
+        return zooDAO.findById(ZooId).get();
     }
 
     public List<Zoo> getAllZoos() {
         return (List<Zoo>) zooDAO.findAll();
     }
 
-    public List<ZooDepartment> getAllZooDepartments() {
+    public ZooDepartment getDepartmentById(long departmentId) {
+        return zooDepartmentDAO.findById(departmentId).get();
+    }
+
+    public List<ZooDepartment> getAllDepartments() {
         return (List<ZooDepartment>) zooDepartmentDAO.findAll();
+    }
+    
+    public ZooAnimal getAnimalById(long animalId) {
+        return zooAnimalDAO.findById(animalId).get();
+    }
+
+    public List<ZooAnimal> getAllAnimals() {
+        return (List<ZooAnimal>) zooAnimalDAO.findAll();
+    }
+
+    @Transactional
+    public void updateZoo(Zoo zoo) {
+        zooDAO.save(zoo);
+    }
+    
+    @Transactional
+    public void updateDepartment(ZooDepartment department) {
+        zooDepartmentDAO.save(department);
+    }
+    
+    @Transactional
+    public void updateAnimal(ZooAnimal animal) {
+        zooAnimalDAO.save(animal);
+    }
+
+    @Transactional
+    public void deleteZoo(long zooId) {
+        zooDAO.delete(getZooById(zooId));
+    }
+    
+    @Transactional
+    public void deleteDepartment(long departmentId) {
+        zooDAO.delete(getZooById(departmentId));
+    }
+    
+    @Transactional
+    public void deleteAnimal(long animalId) {
+        zooDAO.delete(getZooById(animalId));
     }
 
 }

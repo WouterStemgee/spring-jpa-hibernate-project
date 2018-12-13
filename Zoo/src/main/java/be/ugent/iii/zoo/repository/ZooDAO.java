@@ -11,5 +11,5 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ZooDAO extends CrudRepository<Zoo, Long> {
 
-    Zoo findByName(@Param("name") String name);
+    List<Zoo> findByName(@Param("name") String name);
 }

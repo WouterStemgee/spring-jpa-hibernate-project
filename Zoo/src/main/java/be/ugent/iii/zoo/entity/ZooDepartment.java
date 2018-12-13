@@ -29,7 +29,7 @@ public class ZooDepartment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "department_id")
-    private Long department_id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "zoo_id")
@@ -74,33 +74,30 @@ public class ZooDepartment implements Serializable {
         }
         return animals.add(animal);
     }
-    
-    public Set<ZooAnimal> getBirds(){
+
+    public Set<ZooAnimal> getBirds() {
         Set<ZooAnimal> animals = getAnimals();
-        for(ZooAnimal animal : animals){
-            if(animal instanceof Bird){
+        for (ZooAnimal animal : animals) {
+            if (animal instanceof Bird) {
                 //if it is a bird, do nothing
-            }
-            else{
+            } else {
                 animals.remove(animal);
             }
         }
         return animals;
     }
-    
-     public Set<ZooAnimal> getMammals(){
+
+    public Set<ZooAnimal> getMammals() {
         Set<ZooAnimal> animals = getAnimals();
-        for(ZooAnimal animal : animals){
-            if(animal instanceof Mammal){
+        for (ZooAnimal animal : animals) {
+            if (animal instanceof Mammal) {
                 //if it is a mammal, do nothing
-            }
-            else{
+            } else {
                 animals.remove(animal);
             }
         }
         return animals;
     }
-    
 
     public String getName() {
         return name;
@@ -110,12 +107,12 @@ public class ZooDepartment implements Serializable {
         this.name = name;
     }
 
-    public Long getDepartment_id() {
-        return department_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setDepartment_id(Long department_id) {
-        this.department_id = department_id;
+    public void setId(Long departmentId) {
+        this.id = id;
     }
 
     public Zoo getZoo() {
@@ -129,7 +126,7 @@ public class ZooDepartment implements Serializable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 13 * hash + Objects.hashCode(this.department_id);
+        hash = 13 * hash + Objects.hashCode(this.id);
         hash = 13 * hash + Objects.hashCode(this.name);
         return hash;
     }
@@ -149,7 +146,7 @@ public class ZooDepartment implements Serializable {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.department_id, other.department_id)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
