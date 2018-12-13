@@ -8,7 +8,7 @@
 - [x] De datalaag heeft één of meerdere value-objecten.
 - [x] Met de datalaag kan je één object toevoegen.
 - [x] Met de datalaag kan je een verzameling van objecten toevoegen.
-- [ ] Met de datalaag kan je objecten opvragen. Voorzie zowel een "lazy" als niet "lazy" opvraging.
+- [x] Met de datalaag kan je objecten opvragen. Voorzie zowel een "lazy" als niet "lazy" opvraging.
 - [ ] De datalaag heeft ook een opvraging die gebruik maakt van parameters.
 - [ ] Met de datalaag kan je objecten aanpassen.
 - [ ] Schrijf voor elke functionaliteit een JUnit-test die het gebruik en de mogelijke speciale gevallen illustreert.
@@ -19,7 +19,7 @@
 - [x] Zoo met meerdere ZooDepartment's toevoegen
 - [ ] Zoo met ZooOwner toevoegen
 - [ ] meerdere ZooDepartment's met meerdere ZooKeeper's toevoegen
-- [ ] ZooDepartment met meerdere ZooAnimal's toevoegen
+- [x] ZooDepartment met meerdere ZooAnimal's toevoegen
 - [ ] Test fetch = EAGER bij Zoo<->ZooDepartment
 - [ ] Test cascade = REMOVE bij Zoo<->ZooDepartment
 - [ ] Test fetch = LAZY bij ZooDeparments<->ZooAnimal
