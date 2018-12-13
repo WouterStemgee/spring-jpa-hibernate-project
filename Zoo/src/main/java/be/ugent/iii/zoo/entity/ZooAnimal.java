@@ -3,10 +3,15 @@ package be.ugent.iii.zoo.entity;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -17,6 +22,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "animals")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("otherAnimal")
+@DiscriminatorColumn(name="Specie", discriminatorType = DiscriminatorType.STRING)
 public class ZooAnimal implements Serializable {
 
     @Id
@@ -24,8 +32,9 @@ public class ZooAnimal implements Serializable {
     @Column(name = "animal_id")
     private Long id;
 
-    @Column(name = "specie")
-    private String specie;
+//    moet er volgens mij niet meer staan, aangezien je de discriminatorvalue gebruikt om specie weer te geven
+//    @Column(name = "specie")
+//    private String specie;
 
     @Column(name = "gender")
     private String gender;
@@ -40,8 +49,8 @@ public class ZooAnimal implements Serializable {
     public ZooAnimal() {
     }
 
-    public ZooAnimal(String specie, String gender, String name, ZooDepartment department) {
-        this.specie = specie;
+    public ZooAnimal(String gender, String name, ZooDepartment department) {
+        //this.specie = specie;
         this.gender = gender;
         this.name = name;
         this.department = department;
@@ -71,13 +80,13 @@ public class ZooAnimal implements Serializable {
         this.gender = gender;
     }
 
-    public String getSpecie() {
-        return specie;
-    }
-
-    public void setSpecie(String specie) {
-        this.specie = specie;
-    }
+////    public String getSpecie() {
+////        return specie;
+////    }
+////
+////    public void setSpecie(String specie) {
+////        this.specie = specie;
+////    }
 
     public Long getId() {
         return id;
@@ -91,7 +100,7 @@ public class ZooAnimal implements Serializable {
     public int hashCode() {
         int hash = 5;
         hash = 79 * hash + Objects.hashCode(this.id);
-        hash = 79 * hash + Objects.hashCode(this.specie);
+        //hash = 79 * hash + Objects.hashCode(this.specie);
         hash = 79 * hash + Objects.hashCode(this.gender);
         hash = 79 * hash + Objects.hashCode(this.name);
         return hash;
@@ -109,9 +118,9 @@ public class ZooAnimal implements Serializable {
             return false;
         }
         final ZooAnimal other = (ZooAnimal) obj;
-        if (!Objects.equals(this.specie, other.specie)) {
-            return false;
-        }
+//        if (!Objects.equals(this.specie, other.specie)) {
+//            return false;
+//        }
         if (!Objects.equals(this.gender, other.gender)) {
             return false;
         }
@@ -126,7 +135,7 @@ public class ZooAnimal implements Serializable {
 
     @Override
     public String toString() {
-        return "ZooAnimal{" + "specie=" + specie + ", gender=" + gender + ", name=" + name + '}';
+        return "ZooAnimal{" + " gender=" + gender + ", name=" + name + '}';
     }
 
 }

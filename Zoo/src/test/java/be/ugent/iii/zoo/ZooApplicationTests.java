@@ -2,7 +2,10 @@ package be.ugent.iii.zoo;
 
 import be.ugent.iii.zoo.service.ZooService;
 import be.ugent.iii.zoo.entity.Address;
+import be.ugent.iii.zoo.entity.Bird;
+import be.ugent.iii.zoo.entity.Mammal;
 import be.ugent.iii.zoo.entity.Zoo;
+import be.ugent.iii.zoo.entity.ZooAnimal;
 import be.ugent.iii.zoo.entity.ZooDepartment;
 import be.ugent.iii.zoo.repository.ZooDAO;
 import be.ugent.iii.zoo.repository.ZooDepartmentDAO;
@@ -71,6 +74,81 @@ public class ZooApplicationTests {
             assertEquals(departmentNames.get(i), foundZooDepartment.getName());
             assertEquals(zooName, foundZooDepartment.getZoo().getName());
         }
+    }
+    
+    
+    @Test
+    public void addAnimals(){
+        //create zoo
+        String zooName = "Pairi Daiza";
+        Zoo zoo = new Zoo(zooName, new Address("Domaine de Cambron", 1, 7940, "Brugelette", "België"), "068 25 08 50");
+        
+        
+        //use of other variables
+        List<String> types = Arrays.asList("Bird", "Mammal", "Other", "Mammal", "Other");
+        List<String> genders = Arrays.asList("female", "male", "male", "female", "female");
+        List<String> names = Arrays.asList("Linda", "Martin", "Basil","Eva", "Janice");
+        List<Boolean> flying = Arrays.asList(true, false, false, false, false);
+        List<Boolean> hibernate = Arrays.asList(false, true, false, false, false);
+
+        //create Departments
+        List<String> departmentNames = Arrays.asList("Cambodja", "Kenia", "Belgie", "Italie", "Amerika");
+        
+        
+         List<ZooDepartment> zooDepartments = new ArrayList<>();
+        for (int i = 0; i < departmentNames.size(); i++) {
+            ZooDepartment department = new ZooDepartment(departmentNames.get(i), zoo);
+            zoo.addZooDepartment(department);
+            zooDepartments.add(department);
+        }
+        
+        for (int i = 0; i < zooDepartments.size(); i++) {
+            if(types.get(i).equals("Bird")){
+                Bird bird = new Bird(genders.get(i), names.get(i), zooDepartments.get(i) , flying.get(i));
+                zooDepartments.get(i).addZooAnimal(bird);
+            }
+            
+            else if(types.get(i).equals("Mammal")){
+                Mammal mam = new Mammal(genders.get(i), names.get(i), zooDepartments.get(i) , hibernate.get(i));
+                zooDepartments.get(i).addZooAnimal(mam);
+            }
+            else {
+                ZooAnimal bird = new ZooAnimal(genders.get(i), names.get(i), zooDepartments.get(i));
+                zooDepartments.get(i).addZooAnimal(bird);
+            }
+            
+        }
+        
+        // check bidirectional relation
+        for (ZooDepartment department : zoo.getDepartments()) {
+            assertSame(zoo, department.getZoo());
+        }
+        
+        service.addZooWithDepartments(zoo, zooDepartments);
+        
+        for (ZooDepartment department : zoo.getDepartments()) {
+            service.addAnimals(department.getAnimals());
+        }
+        
+        int mammals = 0;
+        int birds = 0;
+        int animals = 0;
+        
+        for (int i = 0; i < departmentNames.size(); i++) {
+            ZooDepartment foundZooDepartment = service.getDepartment(departmentNames.get(i));
+            assertEquals(departmentNames.get(i), foundZooDepartment.getName());
+            assertEquals(zooName, foundZooDepartment.getZoo().getName());
+            animals += foundZooDepartment.getAnimals().size();
+            birds += foundZooDepartment.getBirds().size();
+            mammals += foundZooDepartment.getMammals().size();
+            
+        }
+        assertEquals(5, animals);
+        assertEquals(1, birds);
+        //de 5 dieren worden toegevoegd, maar de mammals blijft leeg.
+        assertEquals(2, mammals);
+        
+        
     }
 
 }

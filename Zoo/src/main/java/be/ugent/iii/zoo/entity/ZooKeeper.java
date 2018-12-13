@@ -12,7 +12,7 @@ import javax.persistence.ManyToMany;
  * @author Wouter
  */
 @Entity
-@DiscriminatorValue("K")
+@DiscriminatorValue("keeper")
 public class ZooKeeper extends ZooWorker implements Serializable {
 
     @ManyToMany(mappedBy = "zooKeepers")

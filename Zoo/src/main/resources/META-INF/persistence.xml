@@ -5,6 +5,8 @@
     <class>be.ugent.iii.zoo.entity.Zoo</class>
     <class>be.ugent.iii.zoo.entity.ZooAnimal</class>
     <class>be.ugent.iii.zoo.entity.ZooKeeper</class>
+    <class>be.ugent.iii.zoo.entity.Bird</class>
+    <class>be.ugent.iii.zoo.entity.Mammal</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/jpadb"/>
       <property name="javax.persistence.jdbc.user" value="iii"/>

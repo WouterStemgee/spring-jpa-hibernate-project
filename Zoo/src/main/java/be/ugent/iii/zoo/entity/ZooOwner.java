@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
  * @author Wouter
  */
 @Entity
-@DiscriminatorValue("O")
+@DiscriminatorValue("Owner")
 public class ZooOwner extends ZooWorker implements Serializable {
 
     @OneToOne

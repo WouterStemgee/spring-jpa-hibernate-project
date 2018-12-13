@@ -35,7 +35,7 @@ public class ZooDepartment implements Serializable {
     @JoinColumn(name = "zoo_id")
     private Zoo zoo;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     private Set<ZooAnimal> animals = new HashSet<>();
 
     @Column(name = "name")
@@ -74,6 +74,33 @@ public class ZooDepartment implements Serializable {
         }
         return animals.add(animal);
     }
+    
+    public Set<ZooAnimal> getBirds(){
+        Set<ZooAnimal> animals = getAnimals();
+        for(ZooAnimal animal : animals){
+            if(animal instanceof Bird){
+                //if it is a bird, do nothing
+            }
+            else{
+                animals.remove(animal);
+            }
+        }
+        return animals;
+    }
+    
+     public Set<ZooAnimal> getMammals(){
+        Set<ZooAnimal> animals = getAnimals();
+        for(ZooAnimal animal : animals){
+            if(animal instanceof Mammal){
+                //if it is a mammal, do nothing
+            }
+            else{
+                animals.remove(animal);
+            }
+        }
+        return animals;
+    }
+    
 
     public String getName() {
         return name;
