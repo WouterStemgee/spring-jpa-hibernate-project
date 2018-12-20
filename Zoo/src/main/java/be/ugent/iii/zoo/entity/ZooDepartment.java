@@ -37,7 +37,7 @@ public class ZooDepartment implements Serializable {
     @JoinColumn(name = "zoo_id")
     private Zoo zoo;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private Set<ZooAnimal> animals = new HashSet<>();
 
     @Column(name = "name")

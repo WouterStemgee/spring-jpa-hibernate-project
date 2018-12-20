@@ -9,13 +9,12 @@ import be.ugent.iii.zoo.entity.ZooAnimal;
 import be.ugent.iii.zoo.entity.ZooDepartment;
 import be.ugent.iii.zoo.entity.ZooKeeper;
 import be.ugent.iii.zoo.entity.ZooOwner;
-import be.ugent.iii.zoo.entity.ZooWorker;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -33,7 +32,7 @@ public class ZooApplicationTests {
 
     /* TEST:
      *  OneToOne relation between Zoo and ZooOwner
-     *  Check if we can edit entity properties and save the changes to the database
+     *  Edit 1 entity property and save the changes to the database
      */
     @Test
     public void addZoo() {
@@ -60,6 +59,7 @@ public class ZooApplicationTests {
 
     /* TEST:
      *  OneToOne relation between Zoo and ZooOwner
+     *  No cascade (default): if we remove the owner the zoo should remain in the database
      */
     @Test
     public void addZooWithOwner() {
@@ -81,12 +81,21 @@ public class ZooApplicationTests {
         Zoo foundZoo = service.getZooById(zoo.getId());
         assertEquals(zoo.getName(), foundZoo.getName());
         assertEquals(zoo.getOwner().getName(), foundZoo.getOwner().getName());
+        
+        // delete the ZooOwner
+        service.deleteWorker(owner.getId());
+        
+        // check if Zoo is still present in database
+        foundZoo = service.getZooById(zoo.getId());
+        assertEquals(zoo.getId(), foundZoo.getId());
+        
+        // re-add Zoo with ZooOwner to database
+        service.addZooWithOwner(zoo, owner);   
     }
 
     /* TEST:
      *  OneToMany relation between Zoo and ZooDepartment 
      *  FetchType = EAGER
-     *  CascadeType = REMOVE
      */
     @Test
     public void addZooWithDepartments() {
@@ -126,7 +135,7 @@ public class ZooApplicationTests {
     /* TEST:
      *  OneToMany relation between ZooDepartment and ZooAnimal
      *  FetchType = LAZY
-     *  CascadeType = DETATCH
+     *  Inheritance
      */
     @Test
     public void addDepartmentWithAnimals() {
@@ -178,17 +187,17 @@ public class ZooApplicationTests {
             ZooDepartment foundZooDepartment = service.getDepartmentById(zooDepartments.get(i).getId());
             assertEquals(departmentNames.get(i), foundZooDepartment.getName());
             assertEquals(zooName, foundZooDepartment.getZoo().getName());
-            
-            // explicit fetch the Animal's with another Query since we are using lazy fetching here
+
+            // explicitly fetch the Animal's with another Query since we are using lazy fetching here
             List<ZooAnimal> animalList = service.getAnimalsByDepartmentId(foundZooDepartment.getId());
             foundZooDepartment.setAnimals(new HashSet<>(animalList));
-            
-            // count each animal
+
+            // count each animal (test inheritance)
             animals += foundZooDepartment.getAnimals().size();
             birds += foundZooDepartment.getBirds().size();
             mammals += foundZooDepartment.getMammals().size();
         }
-        
+
         // check if correct amount
         assertEquals(5, animals);
         assertEquals(1, birds);
@@ -197,8 +206,7 @@ public class ZooApplicationTests {
 
     /* TEST:
      *  ManyToMany relation between ZooDepartment and ZooKeeper
-     *  FetchType = LAZY (default)
-     *  CascadeType = DETATCH
+     *  Cascade will be checked
      */
     @Test
     public void addDepartmentsWithKeepers() {
@@ -243,6 +251,13 @@ public class ZooApplicationTests {
                 assertTrue(keeper.getDepartments().contains(foundZooDepartment));
             }
         }
+
+        // check Cascade: if we delete the first department, the ZooKeepers from that department should also be removed from the database
+        long departmentId = zooDepartments.get(0).getId();
+        int countBefore = service.getAllWorkers().size();
+        service.deleteDepartment(departmentId);
+        int countAfter = service.getAllWorkers().size();
+        assertNotEquals(countBefore, countAfter);
     }
 
 }

@@ -11,27 +11,50 @@
 - [x] Met de datalaag kan je objecten opvragen. Voorzie zowel een "lazy" als niet "lazy" opvraging.
 - [x] De datalaag heeft ook een opvraging die gebruik maakt van parameters.
 - [x] Met de datalaag kan je objecten aanpassen.
-- [ ] Schrijf voor elke functionaliteit een JUnit-test die het gebruik en de mogelijke speciale gevallen illustreert.
+- [x] Schrijf voor elke functionaliteit een JUnit-test die het gebruik en de mogelijke speciale gevallen illustreert.
 
 ## Testen
+### Overzicht testen met geteste functionaliteit
+#### addZoo()
+- object toevoegen
+- objecten aanpassen
+
+#### addZooWithOwner()
+- 1-1-relatie
+- relatie zonder cascade
+
+#### addZooWithDepartments()
+- 1-n-relatie
+- verzameling van objecten toevoegen
+- niet "lazy" opvraging
+
+#### addDepartmentWithAnimals()
+- 1-n-relatie
+- "lazy" opvraging
+- opvraging die gebruik maakt van parameters
+- overerving
+
+#### addDepartmentsWithKeepers()
+- n-n-relatie
+- relatie met cascade
+
+
 ### TODO
 - [x] Zoo toevoegen
 - [x] Zoo met meerdere ZooDepartment's toevoegen
 - [x] Zoo met ZooOwner toevoegen
-- [ ] meerdere ZooDepartment's met meerdere ZooKeeper's toevoegen
+- [x] meerdere ZooDepartment's met meerdere ZooKeeper's toevoegen
 - [x] ZooDepartment met meerdere ZooAnimal's toevoegen
-- [ ] Test cascade = REMOVE bij Zoo<->ZooDepartment
-- [ ] Test cascade = DETACH bij ZooDeparments<->ZooAnimal
-- [ ] Test fetch = LAZY/EAGER
-- [ ] Zoo toevoegen met alle mogelijke Entiteiten + alle opvragingen met parameters uitvoeren
-- [ ] Zoo toevoegen met alle mogelijke Entiteiten + wijzigingen uitvoeren op alle properties
+- [x] wijzigingen kunnen uitgevoerd worden op properties van een Entity
+- [x] Test fetch = LAZY/EAGER
+- [ ] Test cascade = ALL bij Zoo<->ZooDepartment
 
 ### Entities testen
-1. Entity testen door ze aan te maken 
-2. De object-relaties checken: assertSame(expected, actual)
-3. Entities wegschrijven naar database
-4. Entities opvragen uit database
-5. Checken indien opgevraagde Entities dezelfde properties hebben als de oorspronkelijke Entities: assertEqual(expected, actual)
+- Entity testen door ze aan te maken
+- De object-relaties checken: assertSame(expected, actual)
+- Entities wegschrijven naar database
+- Entities opvragen uit database
+- Checken indien opgevraagde Entities dezelfde properties hebben als de oorspronkelijke Entities: assertEqual(expected, actual)
 
 ## UML Klassendiagram
 ![](https://i.imgur.com/cdlWxcT.png)

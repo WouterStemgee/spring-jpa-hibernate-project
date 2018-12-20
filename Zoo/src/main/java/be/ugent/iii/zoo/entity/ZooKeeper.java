@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +18,7 @@ import javax.persistence.ManyToMany;
 @DiscriminatorValue("Keeper")
 public class ZooKeeper extends ZooWorker implements Serializable {
 
-    @ManyToMany(mappedBy = "zooKeepers", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "zooKeepers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ZooDepartment> departments = new HashSet<>();
 
     public ZooKeeper() {
