@@ -1,7 +1,9 @@
 package be.ugent.iii.zoo.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -41,9 +43,9 @@ public class ZooDepartment implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "zookeepers_per_departments", joinColumns = @JoinColumn(name = "department_id"), inverseJoinColumns = @JoinColumn(name = "worker_id"))
-    private Set<ZooKeeper> zooKeepers = new HashSet<>();
+    private List<ZooKeeper> zooKeepers = new ArrayList<>();
 
     public ZooDepartment() {
     }
@@ -53,7 +55,7 @@ public class ZooDepartment implements Serializable {
         this.zoo = zoo;
     }
 
-    public Set<ZooKeeper> getZooKeepers() {
+    public List<ZooKeeper> getZooKeepers() {
         return zooKeepers;
     }
 
@@ -76,27 +78,23 @@ public class ZooDepartment implements Serializable {
     }
 
     public Set<ZooAnimal> getBirds() {
-        Set<ZooAnimal> animals = getAnimals();
-        for (ZooAnimal animal : animals) {
-            if (animal instanceof Bird) {
-                //if it is a bird, do nothing
-            } else {
-                animals.remove(animal);
+        Set<ZooAnimal> birds = getAnimals();
+        for (ZooAnimal animal : birds) {
+            if (!(animal instanceof Bird)) {
+                birds.remove(animal);
             }
         }
-        return animals;
+        return birds;
     }
 
     public Set<ZooAnimal> getMammals() {
-        Set<ZooAnimal> animals = getAnimals();
-        for (ZooAnimal animal : animals) {
-            if (animal instanceof Mammal) {
-                //if it is a mammal, do nothing
-            } else {
-                animals.remove(animal);
+        Set<ZooAnimal> mammals = getAnimals();
+        for (ZooAnimal animal : mammals) {
+            if (!(animal instanceof Mammal)) {
+                mammals.remove(animal);
             }
         }
-        return animals;
+        return mammals;
     }
 
     public String getName() {
@@ -111,7 +109,7 @@ public class ZooDepartment implements Serializable {
         return id;
     }
 
-    public void setId(Long departmentId) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -154,7 +152,7 @@ public class ZooDepartment implements Serializable {
 
     @Override
     public String toString() {
-        return "ZooDepartment{" + ", name=" + name + '}';
+        return "ZooDepartment{id=" + id + ", name=" + name + '}';
     }
 
 }

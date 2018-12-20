@@ -7,12 +7,17 @@ import be.ugent.iii.zoo.entity.Mammal;
 import be.ugent.iii.zoo.entity.Zoo;
 import be.ugent.iii.zoo.entity.ZooAnimal;
 import be.ugent.iii.zoo.entity.ZooDepartment;
+import be.ugent.iii.zoo.entity.ZooKeeper;
 import be.ugent.iii.zoo.entity.ZooOwner;
+import be.ugent.iii.zoo.entity.ZooWorker;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +42,12 @@ public class ZooApplicationTests {
 
         // retreive Zoo from database
         Zoo foundZoo = service.getZooById(zoo.getId());
-        assertEquals(foundZoo.getName(), zooName);
+        assertEquals(zooName, foundZoo.getName());
     }
 
+    /* TEST:
+     *  OneToOne relation between Zoo and ZooOwner
+     */
     @Test
     public void addZooWithOwner() {
         // create Zoo
@@ -48,10 +56,10 @@ public class ZooApplicationTests {
 
         // create ZooOwner
         ZooOwner owner = new ZooOwner("Han Verschuure", new Address("Rue Joseph Lamotte", 2, 5580, "Han-sur-Lesse", "België"), zoo);
-        owner.setZoo(zoo);
+        zoo.setOwner(owner);
 
         // check bidirectional object-relation
-        assertSame(owner, zoo.getOwner());
+        assertSame(zoo, owner.getZoo());
 
         // add Zoo with ZooOwner to database
         service.addZooWithOwner(zoo, owner);
@@ -62,6 +70,11 @@ public class ZooApplicationTests {
         assertEquals(zoo.getOwner().getName(), foundZoo.getOwner().getName());
     }
 
+    /* TEST:
+     *  OneToMany relation between Zoo and ZooDepartment 
+     *  FetchType = EAGER
+     *  CascadeType = REMOVE
+     */
     @Test
     public void addZooWithDepartments() {
         // create Zoo
@@ -97,8 +110,13 @@ public class ZooApplicationTests {
         }
     }
 
+    /* TEST:
+     *  OneToMany relation between ZooDepartment and ZooAnimal
+     *  FetchType = EAGER
+     *  CascadeType = DETATCH
+     */
     @Test
-    public void addAnimals() {
+    public void addDepartmentWithAnimals() {
         // create zoo
         String zooName = "Pairi Daiza";
         Zoo zoo = new Zoo(zooName, new Address("Domaine de Cambron", 1, 7940, "Brugelette", "België"), "068 25 08 50");
@@ -131,24 +149,18 @@ public class ZooApplicationTests {
                 ZooAnimal bird = new ZooAnimal(genders.get(i), names.get(i), zooDepartments.get(i));
                 zooDepartments.get(i).addZooAnimal(bird);
             }
-
         }
 
-        // check bidirectional object-relation
-        for (ZooDepartment department : zoo.getDepartments()) {
-            assertSame(zoo, department.getZoo());
-        }
-
+        // add Zoo to database
         service.addZooWithDepartments(zoo, zooDepartments);
-
         for (ZooDepartment department : zoo.getDepartments()) {
             service.addDepartmentWithAnimals(department, department.getAnimals());
         }
 
+        // retreive data from database
         int mammals = 0;
         int birds = 0;
         int animals = 0;
-
         for (int i = 0; i < departmentNames.size(); i++) {
             ZooDepartment foundZooDepartment = service.getDepartmentById(zooDepartments.get(i).getId());
             assertEquals(departmentNames.get(i), foundZooDepartment.getName());
@@ -156,12 +168,61 @@ public class ZooApplicationTests {
             animals += foundZooDepartment.getAnimals().size();
             birds += foundZooDepartment.getBirds().size();
             mammals += foundZooDepartment.getMammals().size();
-
         }
         assertEquals(5, animals);
         assertEquals(1, birds);
         //de 5 dieren worden toegevoegd, maar de mammals blijft leeg.
         assertEquals(0, mammals);
+    }
+
+    /* TEST:
+     *  ManyToMany relation between ZooDepartment and ZooKeeper
+     *  FetchType = LAZY (default)
+     *  CascadeType = DETATCH
+     */
+    @Test
+    public void addDepartmentsWithKeepers() {
+        // create Zoo
+        String zooName = "Bellewaerde";
+        Zoo zoo = new Zoo(zooName, new Address("Meenseweg", 497, 8900, "Ieper", "België"), "057 46 86 86");
+
+        // create Department's and ZooKeeper's
+        List<String> departmentNames = Arrays.asList("Canada", "India", "Savanne", "Jungle", "Mexico", "Far West", "Kidspark");
+        List<String> keeperNames = Arrays.asList("Emma", "Lucas", "Elise", "Noah", "Arthur", "Sofie", "Bob");
+        List<ZooDepartment> zooDepartments = new ArrayList<>();
+        List<ZooKeeper> zooKeepers = new ArrayList<>();
+        for (int i = 0; i < departmentNames.size(); i++) {
+            ZooDepartment department = new ZooDepartment(departmentNames.get(i), zoo);         
+            for (int j = 0; j < keeperNames.size(); j++) {
+                ZooKeeper keeper = new ZooKeeper(keeperNames.get(i), new Address("Meenseweg", 497, 8900, "Ieper", "België"), zooDepartments);
+                department.addZooKeeper(keeper);
+                zooKeepers.add(keeper);
+            }
+            zoo.addZooDepartment(department);
+            zooDepartments.add(department);
+        }
+
+        // create ZooOwner
+        ZooOwner owner = new ZooOwner("Albert Florizoone", new Address("Meenseweg", 497, 8900, "Ieper", "België"), zoo);
+        zoo.setOwner(owner);
+        
+        // add Zoo to database  
+        service.addZooWithOwner(zoo, owner);  
+        service.addZooWithDepartments(zoo, zooDepartments);
+        service.addDepartmentsWithKeepers(zooDepartments, zooKeepers);
+
+        // retreive Zoo from database
+        Zoo foundZoo = service.getZooById(zoo.getId());
+        assertEquals(zooName, foundZoo.getName());
+
+        // retreive ZooDepartment's from database, check relation in database
+        for (int i = 0; i < departmentNames.size(); i++) {
+            ZooDepartment foundZooDepartment = service.getDepartmentById(zooDepartments.get(i).getId());
+            assertEquals(departmentNames.get(i), foundZooDepartment.getName());
+            for (ZooKeeper keeper : foundZooDepartment.getZooKeepers()) {           
+                assertTrue(keeper.getDepartments().contains(foundZooDepartment));
+            }
+        }
     }
 
 }
