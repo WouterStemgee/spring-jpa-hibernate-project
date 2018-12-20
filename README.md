@@ -14,8 +14,8 @@
 - [x] Schrijf voor elke functionaliteit een JUnit-test die het gebruik en de mogelijke speciale gevallen illustreert.
 
 ## Testen
-### Overzicht testen met geteste functionaliteit
-#### addZoo()
+### Overzicht geteste functionaliteit
+#### addAndUpdateZoo()
 - object toevoegen
 - objecten aanpassen
 
@@ -38,6 +38,12 @@
 - n-n-relatie
 - relatie met cascade
 
+### Entities testen
+- Entity testen door ze aan te maken
+- De object-relaties checken: assertSame(expected, actual)
+- Entities wegschrijven naar database
+- Entities opvragen uit database
+- Checken indien opgevraagde Entities dezelfde properties hebben als de oorspronkelijke Entities: assertEqual(expected, actual)
 
 ### TODO
 - [x] Zoo toevoegen
@@ -47,14 +53,7 @@
 - [x] ZooDepartment met meerdere ZooAnimal's toevoegen
 - [x] wijzigingen kunnen uitgevoerd worden op properties van een Entity
 - [x] Test fetch = LAZY/EAGER
-- [ ] Test cascade = ALL bij Zoo<->ZooDepartment
-
-### Entities testen
-- Entity testen door ze aan te maken
-- De object-relaties checken: assertSame(expected, actual)
-- Entities wegschrijven naar database
-- Entities opvragen uit database
-- Checken indien opgevraagde Entities dezelfde properties hebben als de oorspronkelijke Entities: assertEqual(expected, actual)
+- [x] Test cascade = ALL bij ZooKeeper<->ZooDepartment
 
 ## UML Klassendiagram
 ![](https://i.imgur.com/cdlWxcT.png)

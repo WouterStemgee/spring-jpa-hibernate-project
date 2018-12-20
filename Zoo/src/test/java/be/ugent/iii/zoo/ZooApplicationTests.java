@@ -35,7 +35,7 @@ public class ZooApplicationTests {
      *  Edit 1 entity property and save the changes to the database
      */
     @Test
-    public void addZoo() {
+    public void addAndUpdateZoo() {
         // create Zoo
         String zooName = "ZOO Antwerpen";
         Zoo zoo = new Zoo(zooName, new Address("Koningin Astridplein", 20, 2018, "Antwerpen", "België"), "");
@@ -54,6 +54,7 @@ public class ZooApplicationTests {
         foundZoo.setPhoneNumber(phoneNumber);
         service.updateZoo(foundZoo);
         foundZoo = service.getZooById(foundZoo.getId());
+        // after edit
         assertEquals(phoneNumber, foundZoo.getPhoneNumber());
     }
 
