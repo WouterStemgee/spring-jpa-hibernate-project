@@ -18,10 +18,12 @@
 #### addAndUpdateZoo()
 - object toevoegen
 - objecten aanpassen
+- heeft value-object
 
 #### addZooWithOwner()
 - 1-1-relatie
 - relatie zonder cascade
+- heeft value-object
 
 #### addZooWithDepartments()
 - 1-n-relatie
@@ -56,17 +58,21 @@
 - [x] Test cascade = ALL bij ZooKeeper<->ZooDepartment
 
 ## UML Klassendiagram
-![](https://i.imgur.com/cdlWxcT.png)
+![](https://i.imgur.com/U0eBWji.png)
+
+## Database
+![](https://i.imgur.com/AFxLNDk.png)
 
 ## Oplossing
 ### 1-1 relaties
 - Zoo<->ZooOwner
 ### 1-n relaties
-- Zoo<->ZooDepartment (cascade = REMOVE)
-- ZooDepartment<->ZooAnimal (cascade = DETACH)
+- Zoo<->ZooDepartment
+- ZooDepartment<->ZooAnimal (cascade)
 ### n-n relaties
 - ZooDepartment<->ZooKeeper (JoinTable = "zookeepers_per_departments")
 ### Overerving 
 - ZooOwner en ZooKeeper gebruiken overerving van ZooWorker (hiërarchie vertaalt naar 1 tabel met discriminator)
+- Mammal en Bird gebruiken overerving van ZooAnimal
 ### Value-objecten
 - Address (Embeddable)

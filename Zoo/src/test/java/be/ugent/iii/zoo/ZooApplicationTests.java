@@ -90,7 +90,7 @@ public class ZooApplicationTests {
         foundZoo = service.getZooById(zoo.getId());
         assertEquals(zoo.getId(), foundZoo.getId());
         
-        // re-add Zoo with ZooOwner to database
+        // re-add ZooOwner to database
         service.addZooWithOwner(zoo, owner);   
     }
 
