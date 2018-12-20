@@ -37,7 +37,7 @@ public class ZooDepartment implements Serializable {
     @JoinColumn(name = "zoo_id")
     private Zoo zoo;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private Set<ZooAnimal> animals = new HashSet<>();
 
     @Column(name = "name")
@@ -68,6 +68,10 @@ public class ZooDepartment implements Serializable {
 
     public Set<ZooAnimal> getAnimals() {
         return animals;
+    }
+
+    public void setAnimals(Set<ZooAnimal> animals) {
+        this.animals = animals;
     }
 
     public boolean addZooAnimal(ZooAnimal animal) {

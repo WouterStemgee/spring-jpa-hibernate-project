@@ -31,6 +31,10 @@ public class ZooApplicationTests {
     @Autowired
     private ZooService service;
 
+    /* TEST:
+     *  OneToOne relation between Zoo and ZooOwner
+     *  Check if we can edit entity properties and save the changes to the database
+     */
     @Test
     public void addZoo() {
         // create Zoo
@@ -43,6 +47,15 @@ public class ZooApplicationTests {
         // retreive Zoo from database
         Zoo foundZoo = service.getZooById(zoo.getId());
         assertEquals(zooName, foundZoo.getName());
+        // before edit
+        assertEquals("", foundZoo.getPhoneNumber());
+
+        // edit Zoo
+        String phoneNumber = "032 24 89 10";
+        foundZoo.setPhoneNumber(phoneNumber);
+        service.updateZoo(foundZoo);
+        foundZoo = service.getZooById(foundZoo.getId());
+        assertEquals(phoneNumber, foundZoo.getPhoneNumber());
     }
 
     /* TEST:
@@ -112,7 +125,7 @@ public class ZooApplicationTests {
 
     /* TEST:
      *  OneToMany relation between ZooDepartment and ZooAnimal
-     *  FetchType = EAGER
+     *  FetchType = LAZY
      *  CascadeType = DETATCH
      */
     @Test
@@ -165,13 +178,20 @@ public class ZooApplicationTests {
             ZooDepartment foundZooDepartment = service.getDepartmentById(zooDepartments.get(i).getId());
             assertEquals(departmentNames.get(i), foundZooDepartment.getName());
             assertEquals(zooName, foundZooDepartment.getZoo().getName());
+            
+            // explicit fetch the Animal's with another Query since we are using lazy fetching here
+            List<ZooAnimal> animalList = service.getAnimalsByDepartmentId(foundZooDepartment.getId());
+            foundZooDepartment.setAnimals(new HashSet<>(animalList));
+            
+            // count each animal
             animals += foundZooDepartment.getAnimals().size();
             birds += foundZooDepartment.getBirds().size();
             mammals += foundZooDepartment.getMammals().size();
         }
+        
+        // check if correct amount
         assertEquals(5, animals);
         assertEquals(1, birds);
-        //de 5 dieren worden toegevoegd, maar de mammals blijft leeg.
         assertEquals(0, mammals);
     }
 
@@ -192,7 +212,7 @@ public class ZooApplicationTests {
         List<ZooDepartment> zooDepartments = new ArrayList<>();
         List<ZooKeeper> zooKeepers = new ArrayList<>();
         for (int i = 0; i < departmentNames.size(); i++) {
-            ZooDepartment department = new ZooDepartment(departmentNames.get(i), zoo);         
+            ZooDepartment department = new ZooDepartment(departmentNames.get(i), zoo);
             for (int j = 0; j < keeperNames.size(); j++) {
                 ZooKeeper keeper = new ZooKeeper(keeperNames.get(i), new Address("Meenseweg", 497, 8900, "Ieper", "België"), zooDepartments);
                 department.addZooKeeper(keeper);
@@ -205,9 +225,9 @@ public class ZooApplicationTests {
         // create ZooOwner
         ZooOwner owner = new ZooOwner("Albert Florizoone", new Address("Meenseweg", 497, 8900, "Ieper", "België"), zoo);
         zoo.setOwner(owner);
-        
+
         // add Zoo to database  
-        service.addZooWithOwner(zoo, owner);  
+        service.addZooWithOwner(zoo, owner);
         service.addZooWithDepartments(zoo, zooDepartments);
         service.addDepartmentsWithKeepers(zooDepartments, zooKeepers);
 
@@ -219,7 +239,7 @@ public class ZooApplicationTests {
         for (int i = 0; i < departmentNames.size(); i++) {
             ZooDepartment foundZooDepartment = service.getDepartmentById(zooDepartments.get(i).getId());
             assertEquals(departmentNames.get(i), foundZooDepartment.getName());
-            for (ZooKeeper keeper : foundZooDepartment.getZooKeepers()) {           
+            for (ZooKeeper keeper : foundZooDepartment.getZooKeepers()) {
                 assertTrue(keeper.getDepartments().contains(foundZooDepartment));
             }
         }

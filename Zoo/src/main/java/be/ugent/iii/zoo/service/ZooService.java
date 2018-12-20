@@ -91,6 +91,10 @@ public class ZooService {
     public ZooAnimal getAnimalById(long animalId) {
         return zooAnimalDAO.findById(animalId).get();
     }
+    
+    public List<ZooAnimal> getAnimalsByDepartmentId(long departmentId) {
+        return zooAnimalDAO.findByDepartmentId(departmentId);
+    }
 
     public List<ZooAnimal> getAllAnimals() {
         return (List<ZooAnimal>) zooAnimalDAO.findAll();
