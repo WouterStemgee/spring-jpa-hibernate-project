@@ -32,7 +32,6 @@
 #### addDepartmentWithAnimals()
 - 1-n-relatie
 - "lazy" opvraging
-- opvraging die gebruik maakt van parameters
 - overerving (hiërarchie vertaalt naar 1 tabel met discriminator)
 
 #### addDepartmentsWithKeepers()
@@ -41,6 +40,7 @@
 
 #### updateZooAddress()
 - objecten aanpassen
+- opvraging die gebruik maakt van parameters
 
 ### TODO
 - [x] Zoo toevoegen
