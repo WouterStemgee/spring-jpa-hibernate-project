@@ -43,7 +43,7 @@
 - opvraging die gebruik maakt van parameters
 
 ## UML Klassendiagram
-![](https://i.imgur.com/cUKzSmn.png)
+![](https://i.imgur.com/hKNjG9U.png)
 
 ## Database
 ![](https://i.imgur.com/uHRi10e.png)
