@@ -260,5 +260,34 @@ public class ZooApplicationTests {
         int countAfter = service.getAllWorkers().size();
         assertNotEquals(countBefore, countAfter);
     }
+    
+    
+    @Test
+    public void ChangeZooAddress(){
+        //initialise zoo
+        String zooName = "Olmense zoo";
+        Address address = new Address("Bosstraat", 33, 2491, "Balen", "België");
+        Zoo zoo = new Zoo(zooName, address, "014 30 98 82");
+        service.addZoo(zoo);
+        
+        //get zoo based on name
+        List<Zoo> zoos = service.getZooByName(zooName);
+        assertEquals(1, zoos.size());
+        
+        //change the address of the found zoo
+        Address newAddress = new Address("Bukenberg", 45, 2491, "Balen", "België");
+        zoos.get(0).setAddress(newAddress);
+        
+        service.updateZoo(zoos.get(0));
+        
+        //get zoo based on name, should get the zoo with the new address
+        List<Zoo> newZoos = service.getZooByName(zooName);
+        
+        Address zooAddr = newZoos.get(0).getAddress();
+        
+        //street and number are the only things changed in the address
+        assertEquals(newAddress.getStreet(), zooAddr.getStreet());
+        assertEquals(newAddress.getNumber(), zooAddr.getNumber());
+    }
 
 }

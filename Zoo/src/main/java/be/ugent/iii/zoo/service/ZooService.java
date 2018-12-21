@@ -75,6 +75,11 @@ public class ZooService {
     public Zoo getZooById(long ZooId) {
         return zooDAO.findById(ZooId).get();
     }
+    
+    public List<Zoo> getZooByName(String name){
+        return zooDAO.findByName(name);
+    }
+
 
     public List<Zoo> getAllZoos() {
         return (List<Zoo>) zooDAO.findAll();
