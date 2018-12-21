@@ -60,7 +60,7 @@
 - Checken indien opgevraagde Entities dezelfde properties hebben als de oorspronkelijke Entities: assertEqual(expected, actual)
 
 ## UML Klassendiagram
-![](https://i.imgur.com/RqMgUCA.png)
+![](https://i.imgur.com/cUKzSmn.png)
 
 ## Database
 ![](https://i.imgur.com/uHRi10e.png)
