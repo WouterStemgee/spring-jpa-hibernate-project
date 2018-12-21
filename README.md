@@ -39,6 +39,9 @@
 - n-n-relatie (join tabel = "zookeepers_per_departments")
 - relatie zonder cascade
 
+#### updateZooAddress()
+- objecten aanpassen
+
 ### TODO
 - [x] Zoo toevoegen
 - [x] Zoo met meerdere ZooDepartment's toevoegen
@@ -47,7 +50,7 @@
 - [x] ZooDepartment met meerdere ZooAnimal's toevoegen
 - [x] wijzigingen kunnen uitgevoerd worden op properties van een Entity
 - [x] Test fetch = LAZY/EAGER
-- [x] Test cascade = ALL bij ZooKeeper<->ZooDepartment
+- [x] Test cascade bij Zoo<->ZooDepartment
 
 ### Entities testen
 - Entity testen door ze aan te maken

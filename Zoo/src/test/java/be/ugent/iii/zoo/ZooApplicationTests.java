@@ -180,7 +180,7 @@ public class ZooApplicationTests {
                 // try to get the ZooAnimal collection, but will throw LazyInitializationException since they are not initialized because of lazy fetching
                 int animalCount = foundZooDepartment.getAnimals().size();
             } catch (LazyInitializationException e) {
-                // explicitly fetch the Animal's with another Query since we are using lazy fetching here
+                // explicitly fetch the Animal's with another Query
                 List<ZooAnimal> animalList = service.getAnimalsByDepartmentId(foundZooDepartment.getId());
                 foundZooDepartment.setAnimals(new HashSet<>(animalList));
 
@@ -264,7 +264,7 @@ public class ZooApplicationTests {
      *  Edit entity properties and save the changes to the database
      */
     @Test
-    public void ChangeZooAddress() {
+    public void updateZooAddress() {
         // initialise Zoo
         String zooName = "Olmense zoo";
         Address address = new Address("Bosstraat", 33, 2491, "Balen", "België");
