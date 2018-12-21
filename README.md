@@ -42,23 +42,6 @@
 - objecten aanpassen
 - opvraging die gebruik maakt van parameters
 
-### TODO
-- [x] Zoo toevoegen
-- [x] Zoo met meerdere ZooDepartment's toevoegen
-- [x] Zoo met ZooOwner toevoegen
-- [x] meerdere ZooDepartment's met meerdere ZooKeeper's toevoegen
-- [x] ZooDepartment met meerdere ZooAnimal's toevoegen
-- [x] wijzigingen kunnen uitgevoerd worden op properties van een Entity
-- [x] Test fetch = LAZY/EAGER
-- [x] Test cascade bij Zoo<->ZooDepartment
-
-### Entities testen
-- Entity testen door ze aan te maken
-- De object-relaties checken: assertSame(expected, actual)
-- Entities wegschrijven naar database
-- Entities opvragen uit database
-- Checken indien opgevraagde Entities dezelfde properties hebben als de oorspronkelijke Entities: assertEqual(expected, actual)
-
 ## UML Klassendiagram
 ![](https://i.imgur.com/cUKzSmn.png)
 
