@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 20, 2018 at 10:56 PM
+-- Generation Time: Dec 21, 2018 at 11:36 AM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -66,22 +66,17 @@ CREATE TABLE `departments` (
 --
 
 INSERT INTO `departments` (`department_id`, `name`, `zoo_id`) VALUES
-(8, 'Cambodja', 3),
-(2, 'India', 2),
-(3, 'Savanne', 2),
-(4, 'Jungle', 2),
-(5, 'Mexico', 2),
-(6, 'Far West', 2),
-(7, 'Kidspark', 2),
-(9, 'Kenia', 3),
-(10, 'Belgie', 3),
-(11, 'Italie', 3),
-(12, 'Amerika', 3),
-(13, 'Europe', 5),
-(14, 'Africa', 5),
-(15, 'America', 5),
-(16, 'Asia', 5),
-(17, 'Oceania', 5);
+(8, 'Cambodja', 4),
+(2, 'India', 3),
+(3, 'Savanne', 3),
+(4, 'Jungle', 3),
+(5, 'Mexico', 3),
+(6, 'Far West', 3),
+(7, 'Kidspark', 3),
+(9, 'Kenia', 4),
+(10, 'Belgie', 4),
+(11, 'Italie', 4),
+(12, 'Amerika', 4);
 
 -- --------------------------------------------------------
 
@@ -106,49 +101,15 @@ CREATE TABLE `workers` (
 --
 
 INSERT INTO `workers` (`worker_type`, `worker_id`, `city`, `country`, `number`, `street`, `zipcode`, `name`, `zoo_id`) VALUES
-('Owner', 1, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Albert Florizoone', 2),
-('Keeper', 9, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Lucas', NULL),
-('Keeper', 10, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Lucas', NULL),
-('Keeper', 11, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Lucas', NULL),
-('Keeper', 12, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Lucas', NULL),
-('Keeper', 13, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Lucas', NULL),
-('Keeper', 14, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Lucas', NULL),
-('Keeper', 15, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Lucas', NULL),
-('Keeper', 16, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Elise', NULL),
-('Keeper', 17, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Elise', NULL),
-('Keeper', 18, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Elise', NULL),
-('Keeper', 19, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Elise', NULL),
-('Keeper', 20, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Elise', NULL),
-('Keeper', 21, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Elise', NULL),
-('Keeper', 22, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Elise', NULL),
-('Keeper', 23, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Noah', NULL),
-('Keeper', 24, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Noah', NULL),
-('Keeper', 25, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Noah', NULL),
-('Keeper', 26, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Noah', NULL),
-('Keeper', 27, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Noah', NULL),
-('Keeper', 28, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Noah', NULL),
-('Keeper', 29, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Noah', NULL),
-('Keeper', 30, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Arthur', NULL),
-('Keeper', 31, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Arthur', NULL),
-('Keeper', 32, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Arthur', NULL),
-('Keeper', 33, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Arthur', NULL),
-('Keeper', 34, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Arthur', NULL),
-('Keeper', 35, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Arthur', NULL),
-('Keeper', 36, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Arthur', NULL),
-('Keeper', 37, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Sofie', NULL),
-('Keeper', 38, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Sofie', NULL),
-('Keeper', 39, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Sofie', NULL),
-('Keeper', 40, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Sofie', NULL),
-('Keeper', 41, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Sofie', NULL),
-('Keeper', 42, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Sofie', NULL),
-('Keeper', 43, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Sofie', NULL),
-('Keeper', 44, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Bob', NULL),
-('Keeper', 45, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Bob', NULL),
-('Keeper', 46, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Bob', NULL),
-('Keeper', 47, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Bob', NULL),
-('Keeper', 48, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Bob', NULL),
-('Keeper', 49, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Bob', NULL),
-('Keeper', 50, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Bob', NULL);
+('Owner', 1, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Albert Florizoone', 3),
+('Keeper', 2, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Emma', NULL),
+('Keeper', 3, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Lucas', NULL),
+('Keeper', 4, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Elise', NULL),
+('Keeper', 5, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Noah', NULL),
+('Keeper', 6, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Arthur', NULL),
+('Keeper', 7, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Sofie', NULL),
+('Keeper', 8, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Bob', NULL),
+('Owner', 9, 'Han-sur-Lesse', 'België', 2, 'Rue Joseph Lamotte', 5580, 'Han Verschuure', 5);
 
 -- --------------------------------------------------------
 
@@ -166,48 +127,48 @@ CREATE TABLE `zookeepers_per_departments` (
 --
 
 INSERT INTO `zookeepers_per_departments` (`department_id`, `worker_id`) VALUES
-(2, 9),
-(2, 10),
-(2, 11),
-(2, 12),
-(2, 13),
-(2, 14),
-(2, 15),
-(3, 16),
-(3, 17),
-(3, 18),
-(3, 19),
-(3, 20),
-(3, 21),
-(3, 22),
-(4, 23),
-(4, 24),
-(4, 25),
-(4, 26),
-(4, 27),
-(4, 28),
-(4, 29),
-(5, 30),
-(5, 31),
-(5, 32),
-(5, 33),
-(5, 34),
-(5, 35),
-(5, 36),
-(6, 37),
-(6, 38),
-(6, 39),
-(6, 40),
-(6, 41),
-(6, 42),
-(6, 43),
-(7, 44),
-(7, 45),
-(7, 46),
-(7, 47),
-(7, 48),
-(7, 49),
-(7, 50);
+(2, 2),
+(2, 3),
+(2, 4),
+(2, 5),
+(2, 6),
+(2, 7),
+(2, 8),
+(3, 2),
+(3, 3),
+(3, 4),
+(3, 5),
+(3, 6),
+(3, 7),
+(3, 8),
+(4, 2),
+(4, 3),
+(4, 4),
+(4, 5),
+(4, 6),
+(4, 7),
+(4, 8),
+(5, 2),
+(5, 3),
+(5, 4),
+(5, 5),
+(5, 6),
+(5, 7),
+(5, 8),
+(6, 2),
+(6, 3),
+(6, 4),
+(6, 5),
+(6, 6),
+(6, 7),
+(6, 8),
+(7, 2),
+(7, 3),
+(7, 4),
+(7, 5),
+(7, 6),
+(7, 7),
+(7, 8);
 
 -- --------------------------------------------------------
 
@@ -232,10 +193,10 @@ CREATE TABLE `zoos` (
 
 INSERT INTO `zoos` (`zoo_id`, `city`, `country`, `number`, `street`, `zipcode`, `name`, `phone_number`) VALUES
 (1, 'Antwerpen', 'België', 20, 'Koningin Astridplein', 2018, 'ZOO Antwerpen', '032 24 89 10'),
-(2, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Bellewaerde', '057 46 86 86'),
-(3, 'Brugelette', 'België', 1, 'Domaine de Cambron', 7940, 'Pairi Daiza', '068 25 08 50'),
-(4, 'Han-sur-Lesse', 'België', 2, 'Rue Joseph Lamotte', 5580, 'De grotten van Han', '084 37 72 13'),
-(5, 'Mechelen', 'België', 582, 'Leuvensesteenweg', 2812, 'Planckendael', '015 41 49 21');
+(2, 'Balen', 'België', 45, 'Bukenberg', 2491, 'Olmense zoo', '014 30 98 82'),
+(3, 'Ieper', 'België', 497, 'Meenseweg', 8900, 'Bellewaerde', '057 46 86 86'),
+(4, 'Brugelette', 'België', 1, 'Domaine de Cambron', 7940, 'Pairi Daiza', '068 25 08 50'),
+(5, 'Han-sur-Lesse', 'België', 2, 'Rue Joseph Lamotte', 5580, 'De grotten van Han', '084 37 72 13');
 
 --
 -- Indexes for dumped tables
@@ -293,12 +254,12 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `workers`
 --
 ALTER TABLE `workers`
-  MODIFY `worker_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `worker_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `zoos`
 --
 ALTER TABLE `zoos`
-  MODIFY `zoo_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;COMMIT;
+  MODIFY `zoo_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

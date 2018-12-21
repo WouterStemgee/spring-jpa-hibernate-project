@@ -13,8 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
+import org.hibernate.LazyInitializationException;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -31,14 +32,13 @@ public class ZooApplicationTests {
     private ZooService service;
 
     /* TEST:
-     *  OneToOne relation between Zoo and ZooOwner
-     *  Edit 1 entity property and save the changes to the database
+     *  Add entity to database
      */
     @Test
-    public void addAndUpdateZoo() {
+    public void addZoo() {
         // create Zoo
         String zooName = "ZOO Antwerpen";
-        Zoo zoo = new Zoo(zooName, new Address("Koningin Astridplein", 20, 2018, "Antwerpen", "België"), "");
+        Zoo zoo = new Zoo(zooName, new Address("Koningin Astridplein", 20, 2018, "Antwerpen", "België"), "032 24 89 10");
 
         // add Zoo to database
         service.addZoo(zoo);
@@ -46,21 +46,10 @@ public class ZooApplicationTests {
         // retreive Zoo from database
         Zoo foundZoo = service.getZooById(zoo.getId());
         assertEquals(zooName, foundZoo.getName());
-        // before edit
-        assertEquals("", foundZoo.getPhoneNumber());
-
-        // edit Zoo
-        String phoneNumber = "032 24 89 10";
-        foundZoo.setPhoneNumber(phoneNumber);
-        service.updateZoo(foundZoo);
-        foundZoo = service.getZooById(foundZoo.getId());
-        // after edit
-        assertEquals(phoneNumber, foundZoo.getPhoneNumber());
     }
 
     /* TEST:
      *  OneToOne relation between Zoo and ZooOwner
-     *  No cascade (default): if we remove the owner the zoo should remain in the database
      */
     @Test
     public void addZooWithOwner() {
@@ -82,23 +71,15 @@ public class ZooApplicationTests {
         Zoo foundZoo = service.getZooById(zoo.getId());
         assertEquals(zoo.getName(), foundZoo.getName());
         assertEquals(zoo.getOwner().getName(), foundZoo.getOwner().getName());
-        
-        // delete the ZooOwner
-        service.deleteWorker(owner.getId());
-        
-        // check if Zoo is still present in database
-        foundZoo = service.getZooById(zoo.getId());
-        assertEquals(zoo.getId(), foundZoo.getId());
-        
-        // re-add ZooOwner to database
-        service.addZooWithOwner(zoo, owner);   
     }
 
     /* TEST:
      *  OneToMany relation between Zoo and ZooDepartment 
+     *  Adding multiple entities to database
      *  FetchType = EAGER
+    .*  Cascade (REMOVE): if we remove the Zoo, the ZooDepartment's should also be removed from the database
      */
-    @Test
+    @Test(expected = NoSuchElementException.class)
     public void addZooWithDepartments() {
         // create Zoo
         String zooName = "Planckendael";
@@ -130,6 +111,13 @@ public class ZooApplicationTests {
             ZooDepartment foundZooDepartment = service.getDepartmentById(zooDepartments.get(i).getId());
             assertEquals(departmentNames.get(i), foundZooDepartment.getName());
             assertEquals(zooName, foundZooDepartment.getZoo().getName());
+        }
+
+        // remove Zoo from database
+        service.deleteZoo(zoo.getId());
+        for (ZooDepartment department : zoo.getDepartments()) {
+            // will throw NoSuchElementException since the departments should be removed aswell
+            service.getDepartmentById(department.getId());
         }
     }
 
@@ -188,15 +176,19 @@ public class ZooApplicationTests {
             ZooDepartment foundZooDepartment = service.getDepartmentById(zooDepartments.get(i).getId());
             assertEquals(departmentNames.get(i), foundZooDepartment.getName());
             assertEquals(zooName, foundZooDepartment.getZoo().getName());
+            try {
+                // try to get the ZooAnimal collection, but will throw LazyInitializationException since they are not initialized because of lazy fetching
+                int animalCount = foundZooDepartment.getAnimals().size();
+            } catch (LazyInitializationException e) {
+                // explicitly fetch the Animal's with another Query since we are using lazy fetching here
+                List<ZooAnimal> animalList = service.getAnimalsByDepartmentId(foundZooDepartment.getId());
+                foundZooDepartment.setAnimals(new HashSet<>(animalList));
 
-            // explicitly fetch the Animal's with another Query since we are using lazy fetching here
-            List<ZooAnimal> animalList = service.getAnimalsByDepartmentId(foundZooDepartment.getId());
-            foundZooDepartment.setAnimals(new HashSet<>(animalList));
-
-            // count each animal (test inheritance)
-            animals += foundZooDepartment.getAnimals().size();
-            birds += foundZooDepartment.getBirds().size();
-            mammals += foundZooDepartment.getMammals().size();
+                // count each animal (test inheritance)
+                animals += foundZooDepartment.getAnimals().size();
+                birds += foundZooDepartment.getBirds().size();
+                mammals += foundZooDepartment.getMammals().size();
+            }
         }
 
         // check if correct amount
@@ -207,7 +199,7 @@ public class ZooApplicationTests {
 
     /* TEST:
      *  ManyToMany relation between ZooDepartment and ZooKeeper
-     *  Cascade will be checked
+     *  No cascade (default): if we remove a ZooDepartment, the ZooKeeper's should remain in the database
      */
     @Test
     public void addDepartmentsWithKeepers() {
@@ -222,13 +214,21 @@ public class ZooApplicationTests {
         List<ZooKeeper> zooKeepers = new ArrayList<>();
         for (int i = 0; i < departmentNames.size(); i++) {
             ZooDepartment department = new ZooDepartment(departmentNames.get(i), zoo);
-            for (int j = 0; j < keeperNames.size(); j++) {
-                ZooKeeper keeper = new ZooKeeper(keeperNames.get(i), new Address("Meenseweg", 497, 8900, "Ieper", "België"), zooDepartments);
-                department.addZooKeeper(keeper);
-                zooKeepers.add(keeper);
-            }
-            zoo.addZooDepartment(department);
             zooDepartments.add(department);
+        }
+
+        for (int i = 0; i < keeperNames.size(); i++) {
+            ZooKeeper keeper = new ZooKeeper(keeperNames.get(i), new Address("Meenseweg", 497, 8900, "Ieper", "België"));
+            for (int j = 0; j < departmentNames.size(); j++) {
+                keeper.addDepartment(zooDepartments.get(j));
+                zooDepartments.get(j).addZooKeeper(keeper);
+            }
+            zooKeepers.add(keeper);
+        }
+
+        for (int i = 0; i < departmentNames.size(); i++) {
+            ZooDepartment department = zooDepartments.get(i);
+            zoo.addZooDepartment(department);
         }
 
         // create ZooOwner
@@ -237,7 +237,6 @@ public class ZooApplicationTests {
 
         // add Zoo to database  
         service.addZooWithOwner(zoo, owner);
-        service.addZooWithDepartments(zoo, zooDepartments);
         service.addDepartmentsWithKeepers(zooDepartments, zooKeepers);
 
         // retreive Zoo from database
@@ -253,39 +252,41 @@ public class ZooApplicationTests {
             }
         }
 
-        // check Cascade: if we delete the first department, the ZooKeepers from that department should also be removed from the database
+        // check Cascade: if we delete the first department, the ZooKeepers from that department should remain in the database
         long departmentId = zooDepartments.get(0).getId();
         int countBefore = service.getAllWorkers().size();
         service.deleteDepartment(departmentId);
         int countAfter = service.getAllWorkers().size();
-        assertNotEquals(countBefore, countAfter);
+        assertEquals(countBefore, countAfter);
     }
-    
-    
+
+    /* TEST:
+     *  Edit entity properties and save the changes to the database
+     */
     @Test
-    public void ChangeZooAddress(){
-        //initialise zoo
+    public void ChangeZooAddress() {
+        // initialise Zoo
         String zooName = "Olmense zoo";
         Address address = new Address("Bosstraat", 33, 2491, "Balen", "België");
         Zoo zoo = new Zoo(zooName, address, "014 30 98 82");
         service.addZoo(zoo);
-        
-        //get zoo based on name
+
+        // get Zoo based on name
         List<Zoo> zoos = service.getZooByName(zooName);
         assertEquals(1, zoos.size());
-        
-        //change the address of the found zoo
+
+        // change the Address of the found zoo
         Address newAddress = new Address("Bukenberg", 45, 2491, "Balen", "België");
         zoos.get(0).setAddress(newAddress);
-        
+
         service.updateZoo(zoos.get(0));
-        
-        //get zoo based on name, should get the zoo with the new address
+
+        // get Zoo based on name, should get the Zoo with the new Address
         List<Zoo> newZoos = service.getZooByName(zooName);
-        
+
         Address zooAddr = newZoos.get(0).getAddress();
-        
-        //street and number are the only things changed in the address
+
+        // street and number are the only things changed in the Address
         assertEquals(newAddress.getStreet(), zooAddr.getStreet());
         assertEquals(newAddress.getNumber(), zooAddr.getNumber());
     }

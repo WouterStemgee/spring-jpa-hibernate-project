@@ -18,21 +18,22 @@ import javax.persistence.ManyToMany;
 @DiscriminatorValue("Keeper")
 public class ZooKeeper extends ZooWorker implements Serializable {
 
-    @ManyToMany(mappedBy = "zooKeepers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "zooKeepers", fetch = FetchType.EAGER)
     private Set<ZooDepartment> departments = new HashSet<>();
 
     public ZooKeeper() {
     }
 
-    public ZooKeeper(String name, Address address, List<ZooDepartment> departments) {
+    public ZooKeeper(String name, Address address) {
         super(name, address);
-        for (ZooDepartment department : departments) {
-            addDepartment(department);
-        }
     }
 
     public Set<ZooDepartment> getDepartments() {
         return departments;
+    }
+    
+    public void setDepartments(List<ZooDepartment> departments) {
+        this.departments = new HashSet<>(departments);
     }
 
     public boolean addDepartment(ZooDepartment department) {

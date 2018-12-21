@@ -75,11 +75,10 @@ public class ZooService {
     public Zoo getZooById(long ZooId) {
         return zooDAO.findById(ZooId).get();
     }
-    
-    public List<Zoo> getZooByName(String name){
+
+    public List<Zoo> getZooByName(String name) {
         return zooDAO.findByName(name);
     }
-
 
     public List<Zoo> getAllZoos() {
         return (List<Zoo>) zooDAO.findAll();
@@ -96,7 +95,7 @@ public class ZooService {
     public ZooAnimal getAnimalById(long animalId) {
         return zooAnimalDAO.findById(animalId).get();
     }
-    
+
     public List<ZooAnimal> getAnimalsByDepartmentId(long departmentId) {
         return zooAnimalDAO.findByDepartmentId(departmentId);
     }
@@ -104,7 +103,7 @@ public class ZooService {
     public List<ZooAnimal> getAllAnimals() {
         return (List<ZooAnimal>) zooAnimalDAO.findAll();
     }
-    
+
     public ZooWorker getWorkerById(long workerId) {
         return zooWorkerDAO.findById(workerId).get();
     }
@@ -127,7 +126,7 @@ public class ZooService {
     public void updateAnimal(ZooAnimal animal) {
         zooAnimalDAO.save(animal);
     }
-    
+
     @Transactional
     public void updateWorker(ZooWorker worker) {
         zooWorkerDAO.save(worker);

@@ -15,37 +15,29 @@
 
 ## Testen
 ### Overzicht geteste functionaliteit
-#### addAndUpdateZoo()
+#### addZoo()
 - object toevoegen
-- objecten aanpassen
-- heeft value-object
+- heeft value-object (Address)
 
 #### addZooWithOwner()
 - 1-1-relatie
-- relatie zonder cascade
-- heeft value-object
+- heeft value-object (Address)
 
 #### addZooWithDepartments()
 - 1-n-relatie
 - verzameling van objecten toevoegen
 - niet "lazy" opvraging
+- relatie met cascade
 
 #### addDepartmentWithAnimals()
 - 1-n-relatie
 - "lazy" opvraging
 - opvraging die gebruik maakt van parameters
-- overerving
+- overerving (hiërarchie vertaalt naar 1 tabel met discriminator)
 
 #### addDepartmentsWithKeepers()
-- n-n-relatie
-- relatie met cascade
-
-### Entities testen
-- Entity testen door ze aan te maken
-- De object-relaties checken: assertSame(expected, actual)
-- Entities wegschrijven naar database
-- Entities opvragen uit database
-- Checken indien opgevraagde Entities dezelfde properties hebben als de oorspronkelijke Entities: assertEqual(expected, actual)
+- n-n-relatie (join tabel = "zookeepers_per_departments")
+- relatie zonder cascade
 
 ### TODO
 - [x] Zoo toevoegen
@@ -57,22 +49,15 @@
 - [x] Test fetch = LAZY/EAGER
 - [x] Test cascade = ALL bij ZooKeeper<->ZooDepartment
 
+### Entities testen
+- Entity testen door ze aan te maken
+- De object-relaties checken: assertSame(expected, actual)
+- Entities wegschrijven naar database
+- Entities opvragen uit database
+- Checken indien opgevraagde Entities dezelfde properties hebben als de oorspronkelijke Entities: assertEqual(expected, actual)
+
 ## UML Klassendiagram
-![](https://i.imgur.com/U0eBWji.png)
+![](https://i.imgur.com/6ZMEBiP.png)
 
 ## Database
 ![](https://i.imgur.com/uHRi10e.png)
-
-## Oplossing
-### 1-1 relaties
-- Zoo<->ZooOwner
-### 1-n relaties
-- Zoo<->ZooDepartment
-- ZooDepartment<->ZooAnimal (cascade)
-### n-n relaties
-- ZooDepartment<->ZooKeeper (JoinTable = "zookeepers_per_departments")
-### Overerving 
-- ZooOwner en ZooKeeper gebruiken overerving van ZooWorker (hiërarchie vertaalt naar 1 tabel met discriminator)
-- Mammal en Bird gebruiken overerving van ZooAnimal
-### Value-objecten
-- Address (Embeddable)
